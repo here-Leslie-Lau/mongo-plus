@@ -11,20 +11,20 @@ import (
 
 type Chain struct {
 	coll *mongo.Collection
-	// 查询条件暂存区
-	findStorage map[string]interface{}
+	// 条件暂存区
+	condStorage map[string]interface{}
 }
 
 func (ch *Chain) init() {
-	if ch.findStorage == nil {
-		ch.findStorage = make(map[string]interface{})
+	if ch.condStorage == nil {
+		ch.condStorage = make(map[string]interface{})
 	}
 }
 
 // Where 单个查询条件拼接
 func (ch *Chain) Where(key, val string) *Chain {
 	ch.init()
-	ch.findStorage[key] = val
+	ch.condStorage[key] = val
 	return ch
 }
 
@@ -32,7 +32,7 @@ func (ch *Chain) Where(key, val string) *Chain {
 func (ch *Chain) Filter(filter map[string]interface{}) *Chain {
 	ch.init()
 	for k, v := range filter {
-		ch.findStorage[k] = v
+		ch.condStorage[k] = v
 	}
 	return ch
 }
@@ -40,14 +40,14 @@ func (ch *Chain) Filter(filter map[string]interface{}) *Chain {
 // FindOne 查询单个文档
 func (ch *Chain) FindOne(ctx context.Context, des interface{}) error {
 	// map => bson.M{}
-	f := bson.M(ch.findStorage)
+	f := bson.M(ch.condStorage)
 	return ch.coll.FindOne(ctx, f).Decode(des)
 }
 
 // Find 查询多个文档
 func (ch *Chain) Find(ctx context.Context, des interface{}) error {
 	// map => bson.M{}
-	f := bson.M(ch.findStorage)
+	f := bson.M(ch.condStorage)
 	cur, err := ch.coll.Find(ctx, f)
 	if err != nil {
 		return err
@@ -69,5 +69,37 @@ func (ch *Chain) InsertOne(ctx context.Context, doc interface{}) error {
 // InsertMany 插入多条文档, 需要interface{}数组
 func (ch *Chain) InsertMany(ctx context.Context, docs []interface{}) error {
 	_, err := ch.coll.InsertMany(ctx, docs)
+	return err
+}
+
+// UpdateOne 根据chain的条件更新指定的一条文档, updateMap为更新的内容
+func (ch *Chain) UpdateOne(ctx context.Context, updateMap map[string]interface{}) error {
+	f := bson.M(ch.condStorage)
+	updateContent := bson.D{{"$set", updateMap}}
+
+	_, err := ch.coll.UpdateOne(ctx, f, updateContent)
+	return err
+}
+
+// Update 根据chain的条件更新指定的文档, updateMap为更新的内容
+func (ch *Chain) Update(ctx context.Context, updateMap map[string]interface{}) error {
+	f := bson.M(ch.condStorage)
+	updateContent := bson.D{{"$set", updateMap}}
+
+	_, err := ch.coll.UpdateMany(ctx, f, updateContent)
+	return err
+}
+
+// DeleteOne 根据chain的条件删除一条文档
+func (ch *Chain) DeleteOne(ctx context.Context) error {
+	f := bson.M(ch.condStorage)
+	_, err := ch.coll.DeleteOne(ctx, f)
+	return err
+}
+
+// Delete 根据chain的条件删除指定的文档
+func (ch *Chain) Delete(ctx context.Context) error {
+	f := bson.M(ch.condStorage)
+	_, err := ch.coll.DeleteMany(ctx, f)
 	return err
 }
