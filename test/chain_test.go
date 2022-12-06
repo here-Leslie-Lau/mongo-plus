@@ -36,3 +36,23 @@ func TestFindOne(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, "leslie", result.Name)
 }
+
+func TestComparison(t *testing.T) {
+	opts := []mongo.Option{
+		mongo.WithDatabase("test"),
+		mongo.WithMaxPoolSize(10),
+		mongo.WithUsername("your username"),
+		mongo.WithPassword("your password"),
+		mongo.WithAddr("localhost:27017"),
+	}
+	conn, cancel := mongo.NewConn(opts...)
+	defer cancel()
+
+	var result struct {
+		Value int    `json:"value"`
+		Name  string `json:"name"`
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Comparison("value", mongo.ComparisonLt, 25).FindOne(context.Background(), &result)
+	require.Nil(t, err)
+	require.Equal(t, "leslie", result.Name)
+}

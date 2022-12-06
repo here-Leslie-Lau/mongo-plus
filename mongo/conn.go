@@ -46,3 +46,8 @@ func NewConn(opts ...Option) (*Conn, func()) {
 func (c *Conn) Collection(i Collection) *Chain {
 	return &Chain{coll: c.db.Collection(i.Collection())}
 }
+
+// GetDB 获取go driver的database对象
+func (c *Conn) GetDB() *mongo.Database {
+	return c.db
+}

@@ -21,22 +21,6 @@ func (ch *Chain) init() {
 	}
 }
 
-// Where 单个查询条件拼接
-func (ch *Chain) Where(key, val string) *Chain {
-	ch.init()
-	ch.condStorage[key] = val
-	return ch
-}
-
-// Filter 多个查询条件
-func (ch *Chain) Filter(filter map[string]interface{}) *Chain {
-	ch.init()
-	for k, v := range filter {
-		ch.condStorage[k] = v
-	}
-	return ch
-}
-
 // FindOne 查询单个文档
 func (ch *Chain) FindOne(ctx context.Context, des interface{}) error {
 	// map => bson.M{}
