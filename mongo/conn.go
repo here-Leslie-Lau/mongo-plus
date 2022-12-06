@@ -14,7 +14,7 @@ type Conn struct {
 	db  *mongo.Database
 }
 
-func NewClient(opts ...Option) (*Conn, func()) {
+func NewConn(opts ...Option) (*Conn, func()) {
 	cfg := &config{}
 	for _, opt := range opts {
 		opt(cfg)
@@ -43,6 +43,6 @@ func NewClient(opts ...Option) (*Conn, func()) {
 }
 
 // Collection 获取集合对象
-func (c *Conn) Collection(i Collection) *mongo.Collection {
-	return c.db.Collection(i.Collection())
+func (c *Conn) Collection(i Collection) *Chain {
+	return &Chain{coll: c.db.Collection(i.Collection())}
 }
