@@ -2,9 +2,10 @@ package test
 
 import (
 	"context"
-	"github.com/stretchr/testify/require"
 	"study/mongo-plus/mongo"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 type demo struct {
@@ -31,7 +32,7 @@ func TestFindOne(t *testing.T) {
 		Value int    `json:"value"`
 		Name  string `json:"name"`
 	}
-	err := conn.Collection(&demo{collName: "demo"}).FindOne(context.Background(), &result)
+	err := conn.Collection(&demo{collName: "demo"}).Where("name", "leslie").FindOne(context.Background(), &result)
 	require.Nil(t, err)
 	require.Equal(t, "leslie", result.Name)
 }
