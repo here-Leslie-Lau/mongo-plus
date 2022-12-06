@@ -1,4 +1,5 @@
 # mongo-plus
+
 Secondary encapsulation based on mongo go driver
 
 - [mongo-plus](#mongo-plus)
@@ -6,30 +7,57 @@ Secondary encapsulation based on mongo go driver
   - [初衷](#初衷)
   - [项目结构](#项目结构)
   - [核心代码](#核心代码)
-  - [TODO LIST](#TODO LIST)
+  - [版本管理](#版本管理)
   - [如何贡献](#如何贡献)
   - [捐赠](#捐赠)
 
 ## 快速开始
 
-- [] TODO
+- [ ] TODO
 
 ## 初衷
 
-- [] TODO
+*平时在工作或者自己写点小东东时，使用mongo官方提供的 [go driver](https://www.mongodb.com/docs/drivers/go/current/) ，总感觉哪里不方便。*
+
+个人总结了下，有一下几点
+
+- 当进行`mongodb`操作时，需要把官方驱动的各种Option对象准备好，再一口气传入。或许是`gorm`的调用链方式深得我心😄 ,所以也想封装成类似的方式。
+- 官方驱动没有提供比较好的分页方式，_(例如:根据前端或客户端传入的页数/页码大小，获得相应的总页数/总条数)_ 每次都需要再次封装。
+- 我认为一个库需要尽量屏蔽细节，使用者不应该多关注底层实现，开箱即用。_(比如开发者无需了解bson, $gt各种运算符, 分片等)_
 
 ## 项目结构
 
-- [] TODO
+- [ ] TODO
 
 ## 核心代码
 
-- [] TODO
+- [ ] TODO
 
-## TODO LIST
+## 版本管理
+
+**v0.1(现在):**
+
+1. 基本的curd
+2. 分页封装
+3. 达到开发者学习或基本使用`mongodb`的标准(基本功能支持)
+
+**v0.2:**
+
+1. gitbook文档支持
+2. 完善的测试用例
+3. 基准测试
+
+**v0.3**
+
+1. 事务支持
+2. 操作集合、库级别的支持
+
+**v2.0**
+
+1. 去除官方驱动的依赖(待研究)
 
 ## 如何贡献
 
-- [] TODO
+- [ ] TODO
 
 ## 捐赠
