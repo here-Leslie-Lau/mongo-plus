@@ -6,13 +6,17 @@ import (
 )
 
 func TestNewConn(t *testing.T) {
+	_, f := newConn()
+	defer f()
+}
+
+func newConn() (*mongo.Conn, func()) {
 	opts := []mongo.Option{
-		mongo.WithDatabase("local"),
+		mongo.WithDatabase("test"),
 		mongo.WithMaxPoolSize(10),
 		mongo.WithUsername("your username"),
 		mongo.WithPassword("your password"),
 		mongo.WithAddr("localhost:27017"),
 	}
-	_, f := mongo.NewConn(opts...)
-	defer f()
+	return mongo.NewConn(opts...)
 }

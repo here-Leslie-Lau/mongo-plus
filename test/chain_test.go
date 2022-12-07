@@ -17,15 +17,8 @@ func (d *demo) Collection() string {
 	return d.collName
 }
 
-func TestFindOne(t *testing.T) {
-	opts := []mongo.Option{
-		mongo.WithDatabase("test"),
-		mongo.WithMaxPoolSize(10),
-		mongo.WithUsername("your username"),
-		mongo.WithPassword("your password"),
-		mongo.WithAddr("localhost:27017"),
-	}
-	conn, f := mongo.NewConn(opts...)
+func TestChainFindOne(t *testing.T) {
+	conn, f := newConn()
 	defer f()
 
 	var result struct {
@@ -37,15 +30,8 @@ func TestFindOne(t *testing.T) {
 	require.Equal(t, "leslie", result.Name)
 }
 
-func TestComparison(t *testing.T) {
-	opts := []mongo.Option{
-		mongo.WithDatabase("test"),
-		mongo.WithMaxPoolSize(10),
-		mongo.WithUsername("your username"),
-		mongo.WithPassword("your password"),
-		mongo.WithAddr("localhost:27017"),
-	}
-	conn, cancel := mongo.NewConn(opts...)
+func TestChainComparison(t *testing.T) {
+	conn, cancel := newConn()
 	defer cancel()
 
 	var result struct {
@@ -53,6 +39,19 @@ func TestComparison(t *testing.T) {
 		Name  string `json:"name"`
 	}
 	err := conn.Collection(&demo{collName: "demo"}).Comparison("value", mongo.ComparisonLt, 25).FindOne(context.Background(), &result)
+	require.Nil(t, err)
+	require.Equal(t, "leslie", result.Name)
+}
+
+func TestChainInInt64(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var result struct {
+		Value int    `json:"value"`
+		Name  string `json:"name"`
+	}
+	err := conn.Collection(&demo{collName: "demo"}).InInt64("value", []int64{1, 2, 22}).FindOne(context.Background(), &result)
 	require.Nil(t, err)
 	require.Equal(t, "leslie", result.Name)
 }
