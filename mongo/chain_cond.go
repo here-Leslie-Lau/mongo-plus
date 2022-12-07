@@ -48,7 +48,7 @@ const (
 )
 
 // Comparison 比较运算封装, field: 字段名, symbol: 比较符号, val: 比较值
-// such as: age ComparisonGt 1, 筛选年龄大于1的
+// such as: Comparison(age, ComparisonGt, 1), 筛选年龄大于1的
 func (ch *Chain) Comparison(field string, symbol Comparison, val interface{}) *Chain {
 	ch.init()
 	cond := bson.D{{symbol.String(), val}}
@@ -129,4 +129,27 @@ func (ch *Chain) Eq(field string, val interface{}) *Chain {
 // NotEq "不等于"运算的条件拼接, field: 字段名, val: 比较值
 func (ch *Chain) NotEq(field string, val interface{}) *Chain {
 	return ch.Comparison(field, ComparisonNotEq, val)
+}
+
+type Element string
+
+func (e Element) String() string {
+	return string(e)
+}
+
+func (e Element) comparison() Comparison {
+	return Comparison(e)
+}
+
+const (
+	// ElementExists 匹配具有指定字段的文档
+	ElementExists Element = "$exists"
+	// ElementType 如果字段属于指定类型，则选择文档
+	ElementType Element = "$type"
+)
+
+// Exists 匹配具有指定字段的文档， field: 字段名, exist: 布尔值
+// such as: ch.Exists("name", true).Find(ctx, &des), 找出存在name字段的数据
+func (ch *Chain) Exists(field string, exist bool) *Chain {
+	return ch.Comparison(field, ElementExists.comparison(), exist)
 }

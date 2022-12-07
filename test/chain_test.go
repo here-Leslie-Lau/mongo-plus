@@ -55,3 +55,16 @@ func TestChainInInt64(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, "leslie", result.Name)
 }
+
+func TestChainExists(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var result struct {
+		Value int    `json:"value"`
+		Name  string `json:"name"`
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Exists("age", false).FindOne(context.Background(), &result)
+	require.Nil(t, err)
+	require.Equal(t, "leslie", result.Name)
+}
