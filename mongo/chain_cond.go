@@ -37,11 +37,19 @@ const (
 	ComparisonLt Comparison = "$lt"
 	// ComparisonLte 小于等于比较符号
 	ComparisonLte Comparison = "$lte"
+	// ComparisonIn 范围查询符号(匹配项)
+	ComparisonIn Comparison = "$in"
+	// ComparisonNotIn 范围查询符号(排除匹配项)
+	ComparisonNotIn Comparison = "$nin"
+	// ComparisonEq 等于比较符
+	ComparisonEq Comparison = "$eq"
+	// ComparisonNotEq 不等于比较符
+	ComparisonNotEq Comparison = "$ne"
 )
 
 // Comparison 比较运算封装, field: 字段名, symbol: 比较符号, val: 比较值
 // such as: age ComparisonGt 1, 筛选年龄大于1的
-func (ch *Chain) Comparison(field string, symbol Comparison, val int64) *Chain {
+func (ch *Chain) Comparison(field string, symbol Comparison, val interface{}) *Chain {
 	ch.init()
 	cond := bson.D{{symbol.String(), val}}
 	s, exist := ch.condStorage[field]
@@ -62,7 +70,7 @@ func (ch *Chain) Comparison(field string, symbol Comparison, val int64) *Chain {
 }
 
 // Gt "大于"运算的条件拼接, field: 字段名, val: 比较值
-// such as: ch.Gt("age", 18).Find(context.Background(), &des), 找出年龄大于18岁的
+// such as: ch.Gt("age", 18).Find(ctx, &des), 找出年龄大于18岁的
 func (ch *Chain) Gt(field string, val int64) *Chain {
 	return ch.Comparison(field, ComparisonGt, val)
 }
@@ -80,4 +88,45 @@ func (ch *Chain) Lt(field string, val int64) *Chain {
 // Lte "小于等于"运算的条件拼接, field: 字段名, val: 比较值
 func (ch *Chain) Lte(field string, val int64) *Chain {
 	return ch.Comparison(field, ComparisonLte, val)
+}
+
+// In 匹配数组中指定的任何值, field: 字段名, arrays: 数组
+// such as: ch.In("age", []interface{}{18, 19}).Find(ctx, &des), 找年龄为18和19岁的
+func (ch *Chain) In(field string, arrays []interface{}) *Chain {
+	return ch.Comparison(field, ComparisonIn, arrays)
+}
+
+// InInt64 匹配数组中指定的任何值, 数组类型为int64(语法糖), field: 字段名, arrays: 数组
+func (ch *Chain) InInt64(field string, arrays []int64) *Chain {
+	return ch.Comparison(field, ComparisonIn, arrays)
+}
+
+// InString 匹配数组中指定的任何值, 数组类型为string(语法糖), field: 字段名, arrays: 数组
+func (ch *Chain) InString(field string, arrays []string) *Chain {
+	return ch.Comparison(field, ComparisonIn, arrays)
+}
+
+// NotIn 不匹配数组中指定的任何值, field: 字段名, arrays: 数组
+func (ch *Chain) NotIn(field string, arrays []interface{}) *Chain {
+	return ch.Comparison(field, ComparisonNotIn, arrays)
+}
+
+// NotInInt64 不匹配数组中指定的任何值, 数组类型为int64(语法糖), field: 字段名, arrays: 数组
+func (ch *Chain) NotInInt64(field string, arrays []int64) *Chain {
+	return ch.Comparison(field, ComparisonNotIn, arrays)
+}
+
+// NotInString 不匹配数组中指定的任何值, 数组类型为string(语法糖), field: 字段名, arrays: 数组
+func (ch *Chain) NotInString(field string, arrays []string) *Chain {
+	return ch.Comparison(field, ComparisonNotIn, arrays)
+}
+
+// Eq "等于"运算的条件拼接, field: 字段名, val: 比较值
+func (ch *Chain) Eq(field string, val interface{}) *Chain {
+	return ch.Comparison(field, ComparisonEq, val)
+}
+
+// NotEq "不等于"运算的条件拼接, field: 字段名, val: 比较值
+func (ch *Chain) NotEq(field string, val interface{}) *Chain {
+	return ch.Comparison(field, ComparisonNotEq, val)
 }
