@@ -153,3 +153,8 @@ const (
 func (ch *Chain) Exists(field string, exist bool) *Chain {
 	return ch.Comparison(field, ElementExists.comparison(), exist)
 }
+
+// Type 如果字段属于指定类型，则选择文档
+func (ch *Chain) Type(field string, typ MongodbType) *Chain {
+	return ch.Comparison(field, ElementType.comparison(), typ.int())
+}

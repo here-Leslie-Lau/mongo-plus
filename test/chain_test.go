@@ -68,3 +68,16 @@ func TestChainExists(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, "leslie", result.Name)
 }
+
+func TestChainType(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var result struct {
+		Value int    `json:"value"`
+		Name  string `json:"name"`
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Type("value", mongo.Int32).FindOne(context.Background(), &result)
+	require.Nil(t, err)
+	require.Equal(t, "leslie", result.Name)
+}
