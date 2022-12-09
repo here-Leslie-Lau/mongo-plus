@@ -44,7 +44,7 @@ func (ch *Chain) FindOne(ctx context.Context, des interface{}) error {
 func (ch *Chain) Find(ctx context.Context, des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	cur, err := ch.coll.Find(ctx, f)
+	cur, err := ch.coll.Find(ctx, f, ch.findOpt)
 	if err != nil {
 		return err
 	}

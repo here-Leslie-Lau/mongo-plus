@@ -90,3 +90,13 @@ func TestChainCount(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, int64(1), cnt)
 }
+
+func TestChainLimit(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []interface{}
+	err := conn.Collection(&demo{collName: "demo"}).Limit(2).Find(context.Background(), &list)
+	require.Nil(t, err)
+	require.Equal(t, 2, len(list))
+}
