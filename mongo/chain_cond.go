@@ -161,3 +161,12 @@ func (ch *Chain) Limit(limit int64) *Chain {
 	ch.findOpt.SetLimit(limit)
 	return ch
 }
+
+func (ch *Chain) Sort(rules ...SortRule) *Chain {
+	sRules := bson.D{}
+	for _, rule := range rules {
+		sRules = append(sRules, bson.E{Key: rule.Field, Value: rule.Typ})
+	}
+	ch.findOpt.SetSort(sRules)
+	return ch
+}
