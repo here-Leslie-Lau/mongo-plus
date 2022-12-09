@@ -44,7 +44,9 @@ func NewConn(opts ...Option) (*Conn, func()) {
 
 // Collection 获取操作集合的对象
 func (c *Conn) Collection(i Collection) *Chain {
-	return &Chain{coll: c.db.Collection(i.Collection())}
+	ch := &Chain{coll: c.db.Collection(i.Collection())}
+	ch.init()
+	return ch
 }
 
 // GetDB 获取go driver的database对象

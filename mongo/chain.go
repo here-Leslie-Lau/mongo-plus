@@ -4,6 +4,7 @@ package mongo
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,11 +14,22 @@ type Chain struct {
 	coll *mongo.Collection
 	// 条件暂存区
 	condStorage map[string]interface{}
+	// FindOptions条件暂存区
+	findOpt *options.FindOptions
+	// FindOneOptions条件暂存区
+	findOneOpt *options.FindOneOptions
 }
 
+// 对chain的字段进行初始化赋值
 func (ch *Chain) init() {
 	if ch.condStorage == nil {
 		ch.condStorage = make(map[string]interface{})
+	}
+	if ch.findOneOpt == nil {
+		ch.findOneOpt = options.FindOne()
+	}
+	if ch.findOpt == nil {
+		ch.findOpt = options.Find()
 	}
 }
 

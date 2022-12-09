@@ -8,14 +8,12 @@ import (
 
 // Where 单个查询条件拼接
 func (ch *Chain) Where(key string, val interface{}) *Chain {
-	ch.init()
 	ch.condStorage[key] = val
 	return ch
 }
 
 // Filter 多个查询条件
 func (ch *Chain) Filter(filter map[string]interface{}) *Chain {
-	ch.init()
 	for k, v := range filter {
 		ch.condStorage[k] = v
 	}
@@ -50,7 +48,6 @@ const (
 // Comparison 比较运算封装, field: 字段名, symbol: 比较符号, val: 比较值
 // such as: Comparison(age, ComparisonGt, 1), 筛选年龄大于1的
 func (ch *Chain) Comparison(field string, symbol Comparison, val interface{}) *Chain {
-	ch.init()
 	cond := bson.D{{symbol.String(), val}}
 	s, exist := ch.condStorage[field]
 	if !exist {
@@ -157,4 +154,10 @@ func (ch *Chain) Exists(field string, exist bool) *Chain {
 // Type 如果字段属于指定类型，则选择文档
 func (ch *Chain) Type(field string, typ MongodbType) *Chain {
 	return ch.Comparison(field, ElementType.comparison(), typ.int())
+}
+
+// Limit 指定查询返回的文档数
+func (ch *Chain) Limit(limit int64) *Chain {
+	ch.findOpt.SetLimit(limit)
+	return ch
 }
