@@ -50,7 +50,8 @@ Secondary encapsulation based on mongo go driver
 **v0.3**
 
 1. 事务支持
-2. 操作集合、库级别的支持
+2. Aggregation支持
+3. 操作集合、库级别的支持
 
 **v2.0**
 
