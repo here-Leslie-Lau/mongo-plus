@@ -100,3 +100,23 @@ func TestChainLimit(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, 2, len(list))
 }
+
+type result struct {
+	Value int    `json:"value"`
+	Name  string `json:"name"`
+}
+
+func TestChainSort(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []result
+	// 根据value值升序排
+	err := conn.Collection(&demo{collName: "demo"}).Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(context.Background(), &list)
+	require.Nil(t, err)
+	for i := 0; i < len(list)-1; i++ {
+		if list[i].Value > list[i+1].Value {
+			t.Fail()
+		}
+	}
+}
