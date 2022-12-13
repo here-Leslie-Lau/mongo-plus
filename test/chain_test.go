@@ -120,3 +120,13 @@ func TestChainSort(t *testing.T) {
 		}
 	}
 }
+
+func TestChainSkip(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []result
+	err := conn.Collection(&demo{collName: "demo"}).Skip(2).Find(context.Background(), &list)
+	require.Nil(t, err)
+	require.Equal(t, 1, len(list))
+}

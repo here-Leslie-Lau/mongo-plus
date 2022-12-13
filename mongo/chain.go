@@ -4,6 +4,8 @@ package mongo
 
 import (
 	"context"
+
+	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -104,4 +106,17 @@ func (ch *Chain) Delete(ctx context.Context) error {
 func (ch *Chain) Count(ctx context.Context) (int64, error) {
 	f := bson.M(ch.condStorage)
 	return ch.coll.CountDocuments(ctx, f)
+}
+
+func (ch *Chain) Paginate(ctx context.Context, filter *PageFilter, des interface{}) (err error) {
+	// 计算符合条件的总条数
+	filter.TotalCount, err = ch.Count(ctx)
+	if err != nil {
+		return errors.Wrapf(err, "Paginate Chain Count fail")
+	}
+	if filter.PageSize > 0 {
+		filter.TotalPage = int(filter.TotalCount) / filter.PageSize
+	}
+
+	return nil
 }

@@ -167,6 +167,16 @@ func (ch *Chain) Sort(rules ...SortRule) *Chain {
 	for _, rule := range rules {
 		sRules = append(sRules, bson.E{Key: rule.Field, Value: rule.Typ})
 	}
+	// 双写
 	ch.findOpt.SetSort(sRules)
+	ch.findOneOpt.SetSort(sRules)
+	return ch
+}
+
+// Skip 跳过指定条数查询
+// such as: ch.Skip(1) 跳过第一条查询
+func (ch *Chain) Skip(skip int) *Chain {
+	ch.findOpt.SetSkip(int64(skip))
+	ch.findOneOpt.SetSkip(int64(skip))
 	return ch
 }
