@@ -4,11 +4,11 @@ package mongo
 
 type PageFilter struct {
 	// 页数
-	PageNum int
+	PageNum int64
 	// 每页大小
-	PageSize int
+	PageSize int64
 	// 总条数
 	TotalCount int64
 	// 总页数
-	TotalPage int
+	TotalPage int64
 }

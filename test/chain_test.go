@@ -130,3 +130,19 @@ func TestChainSkip(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, 1, len(list))
 }
+
+func TestChainPaginate(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	f := &mongo.PageFilter{
+		PageNum:  1,
+		PageSize: 2,
+	}
+
+	var list []result
+	err := conn.Collection(&demo{collName: "demo"}).Paginate(context.Background(), f, &list)
+	require.Nil(t, err)
+	require.Equal(t, 2, len(list))
+	require.Equal(t, "leslie", list[0].Name)
+}

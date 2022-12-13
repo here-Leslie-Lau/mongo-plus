@@ -175,8 +175,8 @@ func (ch *Chain) Sort(rules ...SortRule) *Chain {
 
 // Skip 跳过指定条数查询
 // such as: ch.Skip(1) 跳过第一条查询
-func (ch *Chain) Skip(skip int) *Chain {
-	ch.findOpt.SetSkip(int64(skip))
-	ch.findOneOpt.SetSkip(int64(skip))
+func (ch *Chain) Skip(skip int64) *Chain {
+	ch.findOpt.SetSkip(skip)
+	ch.findOneOpt.SetSkip(skip)
 	return ch
 }
