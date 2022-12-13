@@ -1,0 +1,29 @@
+name: mongo-plus🔓
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'LICENSE'
+      - '.gitignore'
+      - 'README.md'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - 'LICENSE'
+      - '.gitignore'
+      - 'README.md'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3  #使用这个action，checkout到虚拟环境
+
+          - name: Set up Go🚀
+            uses: actions/setup-go@v2 # 虚拟环境搭建go环境
+            with:
+              go-version: 1.18
+
+          - name: Golang lint
+              run: make init && make lint
