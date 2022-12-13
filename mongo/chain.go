@@ -73,7 +73,7 @@ func (ch *Chain) InsertMany(ctx context.Context, docs []interface{}) error {
 // UpdateOne 根据chain的条件更新指定的一条文档, updateMap为更新的内容
 func (ch *Chain) UpdateOne(ctx context.Context, updateMap map[string]interface{}) error {
 	f := bson.M(ch.condStorage)
-	updateContent := bson.D{{"$set", updateMap}}
+	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
 	_, err := ch.coll.UpdateOne(ctx, f, updateContent)
 	return err
@@ -82,7 +82,7 @@ func (ch *Chain) UpdateOne(ctx context.Context, updateMap map[string]interface{}
 // Update 根据chain的条件更新指定的文档, updateMap为更新的内容
 func (ch *Chain) Update(ctx context.Context, updateMap map[string]interface{}) error {
 	f := bson.M(ch.condStorage)
-	updateContent := bson.D{{"$set", updateMap}}
+	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
 	_, err := ch.coll.UpdateMany(ctx, f, updateContent)
 	return err

@@ -48,7 +48,7 @@ const (
 // Comparison 比较运算封装, field: 字段名, symbol: 比较符号, val: 比较值
 // such as: Comparison(age, ComparisonGt, 1), 筛选年龄大于1的
 func (ch *Chain) Comparison(field string, symbol Comparison, val interface{}) *Chain {
-	cond := bson.D{{symbol.String(), val}}
+	cond := bson.D{bson.E{Key: symbol.String(), Value: val}}
 	s, exist := ch.condStorage[field]
 	if !exist {
 		// 该字段首次加入条件
