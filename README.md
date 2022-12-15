@@ -27,7 +27,30 @@ Secondary encapsulation based on mongo go driver
 
 ## 项目结构
 
-- [ ] TODO
+.
+├── LICENSE
+
+├── makefile
+
+├── mongo
+
+│   ├── chain_cond.go   // 调用链条件拼接逻辑
+
+│   ├── chain.go        // 核心结构体-chain定义
+
+│   ├── collection.go   // collection接口定义 
+
+│   ├── config.go       // 连接mongodb配置
+
+│   ├── conn.go         // 获取连接逻辑及一些初始化方法 
+
+│   ├── paginate.go     // 分页逻辑封装
+
+│   └── type.go         // mongodb类型定义
+
+├── README.md
+
+└── test                  // 一些单元测试以及简单示例
 
 ## 核心代码
 
