@@ -1,7 +1,7 @@
 package test
 
 import (
-	"study/mongo-plus/mongo"
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"testing"
 )
 

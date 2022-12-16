@@ -1,4 +1,4 @@
-module study/mongo-plus
+module github.com/here-Leslie-Lau/mongo-plus
 
 go 1.18
 

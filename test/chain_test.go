@@ -2,7 +2,7 @@ package test
 
 import (
 	"context"
-	"study/mongo-plus/mongo"
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"testing"
 
 	"github.com/stretchr/testify/require"
