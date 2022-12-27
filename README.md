@@ -13,7 +13,11 @@ Secondary encapsulation based on mongo go driver
 
 ## 快速开始
 
-- [ ] TODO
+```shell
+go get -u github.com/here-Leslie-Lau/mongo-plus/mongo
+```
+
+
 
 ## 初衷
 
