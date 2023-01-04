@@ -7,3 +7,8 @@ init:
 # lint code
 lint:
 	golangci-lint run -v
+
+.PHONY: bench
+# golang benchmark
+benchmark:
+	cd test && go test -bench=. -benchmem -benchtime=1s -run=none
