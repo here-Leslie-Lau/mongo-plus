@@ -140,7 +140,7 @@ func TestChainPaginate(t *testing.T) {
 		PageSize: 2,
 	}
 
-	var list []result
+	var list []*result
 	err := conn.Collection(&demo{collName: "demo"}).Paginate(context.Background(), f, &list)
 	require.Nil(t, err)
 	require.Equal(t, 2, len(list))
