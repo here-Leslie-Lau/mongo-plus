@@ -2,21 +2,53 @@
 
 Secondary encapsulation based on mongo go driver
 
-- [mongo-plus](#mongo-plus)
-  - [快速开始](#快速开始)
-  - [初衷](#初衷)
-  - [项目结构](#项目结构)
-  - [核心代码](#核心代码)
-  - [版本管理](#版本管理)
-  - [如何贡献](#如何贡献)
-  - [捐赠](#捐赠)
-
 ## 快速开始
 
 ```shell
 go get -u github.com/here-Leslie-Lau/mongo-plus/mongo
 ```
 
+创建mongodb连接
+
+```go
+opts := []mongo.Option{
+	// 要连接的数据库
+	mongo.WithDatabase("test"),
+	// 最大连接池数量
+	mongo.WithMaxPoolSize(10),
+	// 用户名
+	mongo.WithUsername("your username"),
+	// 密码
+	mongo.WithPassword("your password"),
+	// 连接url
+	mongo.WithAddr("localhost:27017"),
+}
+conn, f := mongo.NewConn(opts...)
+defer f()
+```
+
+获取collection对象
+
+```go
+type Demo struct{}
+
+// Collection 实现mongo.Collection接口, 返回要操作的集合名
+func (d *Demo) Collection() string {
+	return "demo"
+}
+
+// 方法内获取collection对象
+demo := &Demo{}
+coll := conn.Collection(demo)
+```
+
+插入文档(insert)
+
+```go
+coll.InsertOne(ctx, document)
+```
+
+_其余文档补充中，更详细的用法参考test/chain_test.go_
 
 
 ## 初衷

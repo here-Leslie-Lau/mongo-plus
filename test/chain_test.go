@@ -146,3 +146,15 @@ func TestChainPaginate(t *testing.T) {
 	require.Equal(t, 2, len(list))
 	require.Equal(t, "leslie", list[0].Name)
 }
+
+func TestChainInsert(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	doc := &result{
+		Value: 100,
+		Name:  "leslie",
+	}
+	err := conn.Collection(&demo{collName: "demo"}).InsertOne(context.Background(), doc)
+	require.Nil(t, err)
+}
