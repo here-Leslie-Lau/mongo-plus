@@ -29,11 +29,11 @@ func NewConn(opts ...Option) (*Conn, func()) {
 	var err error
 	c.cli, err = mongo.Connect(ctx, option)
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 	// test ping
 	if err := c.cli.Ping(ctx, readpref.Primary()); err != nil {
-		panic(errors.Wrap(err, "mongo ping fail"))
+		panic(any(errors.Wrap(err, "mongo ping fail")))
 	}
 	c.db = c.cli.Database(cfg.Database)
 
