@@ -46,7 +46,16 @@ coll := conn.Collection(demo)
 
 ```go
 coll.InsertOne(ctx, document)
+coll.InsertMany(ctx, documents)
 ```
+
+查询文档
+
+```go
+coll.Where("name", "leslie").FindOne(ctx, &document)
+coll.Where("name", "leslie").Find(ctx, &documents)
+```
+
 
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
@@ -78,11 +87,11 @@ _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 │   ├── chain.go        // 核心结构体-chain定义
 
-│   ├── collection.go   // collection接口定义 
+│   ├── collection.go   // collection接口定义
 
 │   ├── config.go       // 连接mongodb配置
 
-│   ├── conn.go         // 获取连接逻辑及一些初始化方法 
+│   ├── conn.go         // 获取连接逻辑及一些初始化方法
 
 │   ├── paginate.go     // 分页逻辑封装
 
