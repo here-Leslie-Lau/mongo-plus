@@ -1,6 +1,6 @@
 # mongo-plus
 
-Secondary encapsulation based on mongo go driver
+基于mongo go官方驱动的二次封装
 
 ## 快速开始
 
@@ -52,8 +52,12 @@ coll.InsertMany(ctx, documents)
 查询文档
 
 ```go
+// 查询name为leslie的单条文档
 coll.Where("name", "leslie").FindOne(ctx, &document)
+// 查询name为leslie的文档
 coll.Where("name", "leslie").Find(ctx, &documents)
+// 多条件查询
+coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(ctx, &document)
 ```
 
 
@@ -131,6 +135,18 @@ _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## 如何贡献
 
-- [ ] TODO
+step one:
+
+```shell
+git checkout -b feature/要添加的功能描述 origin/master
+# 开发自测完成后提交
+git add .
+git commit -m "功能描述"
+```
+
+step two:
+发起**pull/request**
+
+_tips: 或直接提issue_
 
 ## 捐赠
