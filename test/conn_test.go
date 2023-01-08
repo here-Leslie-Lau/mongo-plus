@@ -1,8 +1,9 @@
 package test
 
 import (
-	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"testing"
+
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 )
 
 func TestNewConn(t *testing.T) {
