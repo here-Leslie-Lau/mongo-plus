@@ -104,30 +104,26 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	8.527s
 
 ## 项目结构
 
+```shell
 .
 ├── LICENSE
-
-├── makefile
-
+├── README.md			// 项目介绍文档
+├── go.mod
+├── go.sum
+├── makefile			// 一些初始化工具
 ├── mongo
-
-│   ├── chain_cond.go   // 调用链条件拼接逻辑
-
-│   ├── chain.go        // 核心结构体-chain定义
-
-│   ├── collection.go   // collection接口定义
-
-│   ├── config.go       // 连接mongodb配置
-
-│   ├── conn.go         // 获取连接逻辑及一些初始化方法
-
-│   ├── paginate.go     // 分页逻辑封装
-
-│   └── type.go         // mongodb类型定义
-
-├── README.md
-
-└── test                  // 一些单元测试以及简单示例
+│   ├── chain.go		// 核心结构体-chain定义, 与操作mongodb方法封装
+│   ├── chain_cond.go	// 调用链条件拼接逻辑
+│   ├── collection.go	// collection接口定义
+│   ├── config.go		// 连接mongodb配置定义
+│   ├── conn.go			// 获取连接逻辑及一些初始化方法
+│   ├── paginate.go		// 分页逻辑封装
+│   └── type.go			// mongodb类型定义
+└── test
+    ├── bench_test.go	// golang基准测试
+    ├── chain_test.go	// 单元测试与用法事例
+    └── conn_test.go	// 测试用例的初始化封装
+```
 
 ## 核心代码
 
