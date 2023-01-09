@@ -66,6 +66,28 @@ coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(ctx, &d
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 
+## Benchmark
+
+```shell
+make benchmark
+```
+
+输出结果(其他方法补充中):
+
+```shell
+$ make benchmark
+cd test && go test -bench=. -benchmem -benchtime=1s -run=none
+goos: darwin
+goarch: arm64
+pkg: github.com/here-Leslie-Lau/mongo-plus/test
+BenchmarkFindOne-8    	   11562	     98005 ns/op	    6619 B/op	      79 allocs/op
+BenchmarkFind-8       	   12964	     92311 ns/op	    6416 B/op	      80 allocs/op
+BenchmarkInString-8   	   12166	     98493 ns/op	    6864 B/op	      88 allocs/op
+BenchmarkInInt64-8    	   12170	     97715 ns/op	    6487 B/op	      80 allocs/op
+PASS
+ok  	github.com/here-Leslie-Lau/mongo-plus/test	8.527s
+```
+
 ## 初衷
 
 *平时在工作或者自己写点小东东时，使用mongo官方提供的 [go driver](https://www.mongodb.com/docs/drivers/go/current/) ，总感觉哪里不方便。*
