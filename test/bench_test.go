@@ -52,6 +52,7 @@ func BenchmarkInInt64(b *testing.B) {
 	var list []*result
 	ctx := context.Background()
 
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_ = conn.Collection(&demo{collName: "demo"}).InInt64("value", []int64{100}).Find(ctx, &list)
 	}
