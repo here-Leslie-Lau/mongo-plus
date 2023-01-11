@@ -63,14 +63,14 @@ func (ch *Chain) Find(des interface{}) error {
 }
 
 // InsertOne 插入一条文档
-func (ch *Chain) InsertOne(ctx context.Context, doc interface{}) error {
-	_, err := ch.coll.InsertOne(ctx, doc)
+func (ch *Chain) InsertOne(doc interface{}) error {
+	_, err := ch.coll.InsertOne(ch.ctx, doc)
 	return err
 }
 
 // InsertMany 插入多条文档, 需要interface{}数组
-func (ch *Chain) InsertMany(ctx context.Context, docs []interface{}) error {
-	_, err := ch.coll.InsertMany(ctx, docs)
+func (ch *Chain) InsertMany(docs []interface{}) error {
+	_, err := ch.coll.InsertMany(ch.ctx, docs)
 	return err
 }
 

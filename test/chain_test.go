@@ -156,6 +156,6 @@ func TestChainInsert(t *testing.T) {
 		Value: 100,
 		Name:  "leslie",
 	}
-	err := conn.Collection(&demo{collName: "demo"}).InsertOne(context.Background(), doc)
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).InsertOne(doc)
 	require.Nil(t, err)
 }

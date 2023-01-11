@@ -47,19 +47,19 @@ coll := conn.Collection(demo)
 插入文档(insert)
 
 ```go
-coll.InsertOne(ctx, document)
-coll.InsertMany(ctx, documents)
+coll.InsertOne(document)
+coll.InsertMany(documents)
 ```
 
 查询文档
 
 ```go
 // 查询name为leslie的单条文档
-coll.WithCtx(ctx).Where("name", "leslie").FindOne(&document)
+coll.Where("name", "leslie").FindOne(&document)
 // 查询name为leslie的文档
-coll.WithCtx(ctx).Where("name", "leslie").Find(&documents)
+coll.Where("name", "leslie").Find(&documents)
 // 多条件查询
-coll.WithCtx(ctx).Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
+coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
 
