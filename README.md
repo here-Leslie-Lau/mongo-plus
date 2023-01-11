@@ -55,11 +55,11 @@ coll.InsertMany(ctx, documents)
 
 ```go
 // 查询name为leslie的单条文档
-coll.Where("name", "leslie").FindOne(ctx, &document)
+coll.WithCtx(ctx).Where("name", "leslie").FindOne(&document)
 // 查询name为leslie的文档
-coll.Where("name", "leslie").Find(ctx, &documents)
+coll.WithCtx(ctx).Where("name", "leslie").Find(&documents)
 // 多条件查询
-coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(ctx, &document)
+coll.WithCtx(ctx).Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
 

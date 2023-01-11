@@ -3,8 +3,15 @@
 package mongo
 
 import (
+	"context"
+
 	"go.mongodb.org/mongo-driver/bson"
 )
+
+func (ch *Chain) WithCtx(ctx context.Context) *Chain {
+	ch.ctx = ctx
+	return ch
+}
 
 // Where 单个查询条件拼接
 func (ch *Chain) Where(key string, val interface{}) *Chain {

@@ -16,7 +16,7 @@ func BenchmarkFindOne(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = conn.Collection(&demo{collName: "demo"}).Where("name", "leslie").FindOne(ctx, res)
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Where("name", "leslie").FindOne(res)
 	}
 }
 
@@ -29,7 +29,7 @@ func BenchmarkFind(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = conn.Collection(&demo{collName: "demo"}).Find(ctx, &list)
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Find(&list)
 	}
 }
 
@@ -41,7 +41,7 @@ func BenchmarkInString(b *testing.B) {
 	ctx := context.Background()
 
 	for i := 0; i < b.N; i++ {
-		_ = conn.Collection(&demo{collName: "demo"}).InString("name", []string{"leslie"}).Find(ctx, &list)
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).InString("name", []string{"leslie"}).Find(&list)
 	}
 }
 
@@ -54,6 +54,6 @@ func BenchmarkInInt64(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = conn.Collection(&demo{collName: "demo"}).InInt64("value", []int64{100}).Find(ctx, &list)
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).InInt64("value", []int64{100}).Find(&list)
 	}
 }

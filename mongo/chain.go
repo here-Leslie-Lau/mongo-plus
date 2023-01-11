@@ -13,6 +13,7 @@ import (
 )
 
 type Chain struct {
+	ctx  context.Context
 	coll *mongo.Collection
 	// 条件暂存区
 	condStorage map[string]interface{}
@@ -33,25 +34,28 @@ func (ch *Chain) init() {
 	if ch.findOpt == nil {
 		ch.findOpt = options.Find()
 	}
+	if ch.ctx == nil {
+		ch.ctx = context.Background()
+	}
 }
 
 // FindOne 查询单个文档
-func (ch *Chain) FindOne(ctx context.Context, des interface{}) error {
+func (ch *Chain) FindOne(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	return ch.coll.FindOne(ctx, f).Decode(des)
+	return ch.coll.FindOne(ch.ctx, f).Decode(des)
 }
 
 // Find 查询多个文档
-func (ch *Chain) Find(ctx context.Context, des interface{}) error {
+func (ch *Chain) Find(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	cur, err := ch.coll.Find(ctx, f, ch.findOpt)
+	cur, err := ch.coll.Find(ch.ctx, f, ch.findOpt)
 	if err != nil {
 		return err
 	}
 
-	if err := cur.All(ctx, des); err != nil {
+	if err := cur.All(ch.ctx, des); err != nil {
 		return err
 	}
 
@@ -120,7 +124,7 @@ func (ch *Chain) Paginate(ctx context.Context, f *PageFilter, des interface{}) (
 		ch.Skip((f.PageNum - 1) * f.PageSize).Limit(f.PageSize)
 	}
 
-	if err := ch.Find(ctx, des); err != nil {
+	if err := ch.Find(des); err != nil {
 		return errors.Wrapf(err, "Paginate Chain Find des fail")
 	}
 
