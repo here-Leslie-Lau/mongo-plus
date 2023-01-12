@@ -87,7 +87,7 @@ func TestChainCount(t *testing.T) {
 	conn, f := newConn()
 	defer f()
 
-	cnt, err := conn.Collection(&demo{collName: "demo"}).Where("name", "leslie").Count(context.Background())
+	cnt, err := conn.Collection(&demo{collName: "demo"}).Where("name", "leslie").Count()
 	require.Nil(t, err)
 	require.Equal(t, int64(1), cnt)
 }

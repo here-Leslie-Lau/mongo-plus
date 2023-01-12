@@ -43,7 +43,7 @@ func (ch *Chain) init() {
 func (ch *Chain) FindOne(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	return ch.coll.FindOne(ch.ctx, f).Decode(des)
+	return ch.coll.FindOne(ch.ctx, f, ch.findOneOpt).Decode(des)
 }
 
 // Find 查询多个文档
@@ -107,15 +107,15 @@ func (ch *Chain) Delete(ctx context.Context) error {
 }
 
 // Count 根据chain内的条件查询满足条件的文档记录数
-func (ch *Chain) Count(ctx context.Context) (int64, error) {
+func (ch *Chain) Count() (int64, error) {
 	f := bson.M(ch.condStorage)
-	return ch.coll.CountDocuments(ctx, f)
+	return ch.coll.CountDocuments(ch.ctx, f)
 }
 
 // Paginate 分页查询, f: 分页相关参数, 方法调用结束后会将总条数/总页数放入f内 des: 查询结果集
 func (ch *Chain) Paginate(f *PageFilter, des interface{}) (err error) {
 	// 计算符合条件的总条数
-	f.TotalCount, err = ch.Count(ch.ctx)
+	f.TotalCount, err = ch.Count()
 	if err != nil {
 		return errors.Wrapf(err, "Paginate Chain Count fail")
 	}
