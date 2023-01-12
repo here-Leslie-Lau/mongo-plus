@@ -113,9 +113,9 @@ func (ch *Chain) Count(ctx context.Context) (int64, error) {
 }
 
 // Paginate 分页查询, f: 分页相关参数, 方法调用结束后会将总条数/总页数放入f内 des: 查询结果集
-func (ch *Chain) Paginate(ctx context.Context, f *PageFilter, des interface{}) (err error) {
+func (ch *Chain) Paginate(f *PageFilter, des interface{}) (err error) {
 	// 计算符合条件的总条数
-	f.TotalCount, err = ch.Count(ctx)
+	f.TotalCount, err = ch.Count(ch.ctx)
 	if err != nil {
 		return errors.Wrapf(err, "Paginate Chain Count fail")
 	}
