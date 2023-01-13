@@ -62,6 +62,12 @@ coll.Where("name", "leslie").Find(&documents)
 coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
+查询满足条件的文档数
+
+```go
+// 查询name为leslie的文档条数
+cnt, err := coll.Where("name", "leslie").Count()
+```
 
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
