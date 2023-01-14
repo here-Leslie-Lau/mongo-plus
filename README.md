@@ -81,6 +81,9 @@ _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
 
+machine: Macbook Pro M1 <br/>
+memory: 8G
+
 ```shell
 make benchmark
 ```
