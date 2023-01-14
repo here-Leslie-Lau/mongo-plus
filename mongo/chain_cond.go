@@ -169,6 +169,8 @@ func (ch *Chain) Limit(limit int64) *Chain {
 	return ch
 }
 
+// Sort 根据条件进行排序
+// such as: ch.Sort(SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&list), 根据value升序查询
 func (ch *Chain) Sort(rules ...SortRule) *Chain {
 	sRules := bson.D{}
 	for _, rule := range rules {

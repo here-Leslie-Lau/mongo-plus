@@ -69,6 +69,13 @@ coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&docume
 cnt, err := coll.Where("name", "leslie").Count()
 ```
 
+排序
+
+```go
+// 根据value字段升序查询
+coll.Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&documents)
+```
+
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 
