@@ -1,8 +1,8 @@
-# mongo-plus
+# mongo-plus  [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://img.shields.io/badge/build-passing-brightgreen.svg) [![](https://img.shields.io/badge/version-v0.1-orange.svg)](https://img.shields.io/badge/version-v0.1-orange.svg) [![](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)
+
+![](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/mongo-plus.png)
 
 基于mongo go官方驱动的二次封装
-
-[![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://img.shields.io/badge/build-passing-brightgreen.svg)&ensp;&ensp;&ensp;&ensp;[![](https://img.shields.io/badge/version-v0.1-orange.svg)](https://img.shields.io/badge/version-v0.1-orange.svg)&ensp;&ensp;&ensp;&ensp;[![](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)
 
 ## 快速开始
 
