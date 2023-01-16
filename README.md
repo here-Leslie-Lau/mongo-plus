@@ -124,6 +124,7 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	8.226s
 .
 ├── LICENSE
 ├── README.md			// 项目介绍文档
+├── docs				// 项目文档
 ├── go.mod
 ├── go.sum
 ├── makefile			// 一些初始化工具
