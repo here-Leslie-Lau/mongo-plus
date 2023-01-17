@@ -169,3 +169,18 @@ func TestProjection(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, 0, res.Value)
 }
+
+func TestChainLt(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Lt("value", 23).Find(&list)
+	require.Nil(t, err)
+
+	for _, user := range list {
+		if user.Value >= 23 {
+			t.Fail()
+		}
+	}
+}
