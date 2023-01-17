@@ -76,8 +76,21 @@ cnt, err := coll.Where("name", "leslie").Count()
 coll.Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&documents)
 ```
 
-_其余文档补充中，更详细的用法参考test/chain_test.go_
+分页
 
+```go
+f := &mongo.PageFilter{
+	// 当前查询第几页
+	PageNum:  1,
+	// 每页多少条
+	PageSize: 2,
+}
+
+// 根据条件将匹配文档塞入documents内, 并将总条数与总页数放入f内
+coll.Paginate(f, &documents)
+```
+
+_其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
 

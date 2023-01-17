@@ -74,7 +74,7 @@ func (ch *Chain) Comparison(field string, symbol Comparison, val interface{}) *C
 }
 
 // Gt "大于"运算的条件拼接, field: 字段名, val: 比较值
-// such as: ch.Gt("age", 18).Find(ctx, &des), 找出年龄大于18岁的
+// such as: ch.Gt("age", 18).Find(&des), 找出年龄大于18岁的
 func (ch *Chain) Gt(field string, val int64) *Chain {
 	return ch.Comparison(field, ComparisonGt, val)
 }
@@ -95,7 +95,7 @@ func (ch *Chain) Lte(field string, val int64) *Chain {
 }
 
 // In 匹配数组中指定的任何值, field: 字段名, arrays: 数组
-// such as: ch.In("age", []interface{}{18, 19}).Find(ctx, &des), 找年龄为18和19岁的
+// such as: ch.In("age", []interface{}{18, 19}).Find(&des), 找年龄为18和19岁的
 func (ch *Chain) In(field string, arrays []interface{}) *Chain {
 	return ch.Comparison(field, ComparisonIn, arrays)
 }
@@ -153,7 +153,7 @@ const (
 )
 
 // Exists 匹配具有指定字段的文档， field: 字段名, exist: 布尔值
-// such as: ch.Exists("name", true).Find(ctx, &des), 找出存在name字段的数据
+// such as: ch.Exists("name", true).Find(&des), 找出存在name字段的数据
 func (ch *Chain) Exists(field string, exist bool) *Chain {
 	return ch.Comparison(field, ElementExists.comparison(), exist)
 }
