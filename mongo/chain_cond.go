@@ -189,3 +189,23 @@ func (ch *Chain) Skip(skip int64) *Chain {
 	ch.findOneOpt.SetSkip(skip)
 	return ch
 }
+
+// Projection 指定要返回的字段
+// such as: ch.Projection("name", "age") 只返回name和age字段
+func (ch *Chain) Projection(fileds ...string) *Chain {
+	// 默认不显示_id字段
+	cond := bson.D{bson.E{Key: "_id", Value: 0}}
+
+	for _, filed := range fileds {
+		// 显示需要展示的字段
+		cond = append(cond, bson.E{
+			Key:   filed,
+			Value: 1,
+		})
+	}
+
+	// 双写
+	ch.findOpt.SetProjection(cond)
+	ch.findOneOpt.SetProjection(cond)
+	return ch
+}

@@ -159,3 +159,13 @@ func TestChainInsert(t *testing.T) {
 	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).InsertOne(doc)
 	require.Nil(t, err)
 }
+
+func TestProjection(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	res := &result{}
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Projection("name").FindOne(res)
+	require.Nil(t, err)
+	require.Equal(t, 0, res.Value)
+}
