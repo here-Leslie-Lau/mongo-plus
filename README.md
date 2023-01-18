@@ -99,6 +99,20 @@ f := &mongo.PageFilter{
 coll.Paginate(f, &documents)
 ```
 
+逻辑操作
+
+```go
+// 找到age大于18的单条记录
+coll.Gt("age", 18).FindOne(&document)
+// 找到age小于18的单条记录
+coll.Lt("age", 18).FindOne(&document)
+// 找到age大于等于18的单条记录
+coll.Gte("age", 18).FindOne(&document)
+// 找到age不等于100的单条记录
+coll.NotEq("age", 100).FindOne(&document)
+// ...其他方法可以参考mongo/chain_cond.go
+```
+
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
