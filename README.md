@@ -113,6 +113,12 @@ coll.NotEq("age", 100).FindOne(&document)
 // ...其他方法可以参考mongo/chain_cond.go
 ```
 
+指定要查询的字段
+```go
+// 查询结果只对"name"字段赋值, 调用该方法后默认不对"_id"字段赋值
+coll.Projection("name").Find(&documents)
+```
+
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
