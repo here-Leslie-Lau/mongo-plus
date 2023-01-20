@@ -21,6 +21,8 @@ type Chain struct {
 	findOpt *options.FindOptions
 	// FindOneOptions条件暂存区
 	findOneOpt *options.FindOneOptions
+	// UpdateOptions条件暂存区
+	updateOpt *options.UpdateOptions
 }
 
 // 对chain的字段进行初始化赋值
@@ -126,6 +128,44 @@ func (ch *Chain) Paginate(f *PageFilter, des interface{}) (err error) {
 
 	if err := ch.Find(des); err != nil {
 		return errors.Wrapf(err, "Paginate Chain Find des fail")
+	}
+
+	return nil
+}
+
+// Upsert 根据chain内的查询条件暂存区,更新或新增一条记录
+// content: 要更新的内容
+// defaultContent: 如果没找到记录, 插入文档的字段默认值
+// such as: ch.Where("name", "leslie").UpsertOne(map[string]interface{}{"age": 18}, map[string]interface{}{"name", "leslie"}), 找到name为leslie的文档, 并将age更新为18, 如果没找到则新增一条文档, 默认值为name-leslie, age-18
+func (ch *Chain) UpsertOne(content, defaultContent map[string]interface{}) error {
+	if len(ch.condStorage) == 0 {
+		// 避免操作整个集合, 直接返回错误
+		return errors.New("chain condStorage is zero, Upsert fail")
+	}
+
+	// map => bson.M
+	f := bson.M(ch.condStorage)
+	c := bson.D{
+		// 要更新的内容
+		{
+			Key:   "$set",
+			Value: bson.M(content),
+		},
+
+		// 如果找不到记录, 要插入新记录的默认值
+		{
+			Key:   "$setOnInsert",
+			Value: bson.M(defaultContent),
+		},
+	}
+
+	if ch.updateOpt == nil {
+		ch.updateOpt = options.Update()
+	}
+
+	_, err := ch.coll.UpdateOne(ch.ctx, f, c, ch.updateOpt.SetUpsert(true))
+	if err != nil {
+		return errors.Wrap(err, "Upsert fail")
 	}
 
 	return nil

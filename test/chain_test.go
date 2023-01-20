@@ -184,3 +184,14 @@ func TestChainLt(t *testing.T) {
 		}
 	}
 }
+
+func TestChainUpsertOne(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	content := map[string]interface{}{"value": 100}
+	defaultContent := map[string]interface{}{"name": "leslie"}
+
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Where("age", 18).UpsertOne(content, defaultContent)
+	require.Nil(t, err)
+}
