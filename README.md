@@ -119,6 +119,18 @@ coll.NotEq("age", 100).FindOne(&document)
 coll.Projection("name").Find(&documents)
 ```
 
+更新或插入一条记录
+
+```go
+// 将age字段更新为18
+content := map[string]interface{}{"age": 18}
+// 如果筛选条件不存在, 要插入的默认值
+default := map[string]interface{}{"name": "leslie"}
+
+conn.Where("name", "leslie").UpsertOne(content, default)
+// 期望结果, 如果name为leslie的文档存在, 则将age更新为18, 否则插入一条{"name": "leslie", "age": 18}的文档
+```
+
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
