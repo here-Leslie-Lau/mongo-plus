@@ -196,10 +196,6 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	8.226s
     └── conn_test.go	// 测试用例的初始化封装
 ```
 
-## 核心代码
-
-- [ ] TODO
-
 ## 版本管理
 
 **v0.1(现在):**
