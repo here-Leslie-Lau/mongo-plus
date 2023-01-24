@@ -5,6 +5,8 @@ package test
 import (
 	"context"
 	"testing"
+
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 )
 
 func BenchmarkFindOne(b *testing.B) {
@@ -56,4 +58,18 @@ func BenchmarkInInt64(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).InInt64("value", []int64{100}).Find(&list)
 	}
+}
+
+func BenchmarkSort(b *testing.B) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	ctx := context.Background()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&list)
+	}
+
 }

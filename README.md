@@ -150,12 +150,13 @@ cd test && go test -bench=. -benchmem -benchtime=1s -run=none
 goos: darwin
 goarch: arm64
 pkg: github.com/here-Leslie-Lau/mongo-plus/test
-BenchmarkFindOne-8    	   11860	     97556 ns/op	    6617 B/op	      79 allocs/op
-BenchmarkFind-8       	   12999	     92032 ns/op	    6417 B/op	      80 allocs/op
-BenchmarkInString-8   	   12180	     98361 ns/op	    6867 B/op	      88 allocs/op
-BenchmarkInInt64-8    	   12309	     99718 ns/op	    6484 B/op	      80 allocs/op
+BenchmarkFindOne-8    	   11989	     96971 ns/op	    6906 B/op	      81 allocs/op
+BenchmarkFind-8       	   13082	     91575 ns/op	    6449 B/op	      81 allocs/op
+BenchmarkInString-8   	   12154	     98752 ns/op	    6899 B/op	      89 allocs/op
+BenchmarkInInt64-8    	   12380	     97217 ns/op	    6517 B/op	      81 allocs/op
+BenchmarkSort-8       	   10000	    101614 ns/op	    6811 B/op	      86 allocs/op
 PASS
-ok  	github.com/here-Leslie-Lau/mongo-plus/test	8.226s
+ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 ```
 
 ## 初衷
