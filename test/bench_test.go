@@ -73,3 +73,16 @@ func BenchmarkSort(b *testing.B) {
 	}
 
 }
+
+func BenchmarkGt(b *testing.B) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	ctx := context.TODO()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Gt("value", 99).Find(&list)
+	}
+}
