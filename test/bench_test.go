@@ -86,3 +86,16 @@ func BenchmarkGt(b *testing.B) {
 		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Gt("value", 99).Find(&list)
 	}
 }
+
+func BenchmarkLt(b *testing.B) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	ctx := context.TODO()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Lt("value", 20).Find(&list)
+	}
+}
