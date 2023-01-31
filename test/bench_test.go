@@ -99,3 +99,16 @@ func BenchmarkLt(b *testing.B) {
 		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Lt("value", 20).Find(&list)
 	}
 }
+
+func BenchmarkFilter(b *testing.B) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	ctx := context.TODO()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = conn.Collection(&demo{collName: "demo"}).WithCtx(ctx).Filter(map[string]interface{}{"name": "leslie", "value": 22}).Find(&list)
+	}
+}
