@@ -53,6 +53,12 @@ demo := &Demo{}
 coll := conn.Collection(demo)
 ```
 
+ctx支持
+
+```go
+coll = coll.WithCtx(ctx)
+```
+
 插入文档(insert)
 
 ```go
