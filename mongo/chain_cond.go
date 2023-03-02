@@ -6,6 +6,7 @@ import (
 	"context"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (ch *Chain) WithCtx(ctx context.Context) *Chain {
@@ -207,5 +208,14 @@ func (ch *Chain) Projection(fileds ...string) *Chain {
 	// 双写
 	ch.findOpt.SetProjection(cond)
 	ch.findOneOpt.SetProjection(cond)
+	return ch
+}
+
+// Regex 模糊查找, filed: 查找的字段名, content: 模糊搜索内容
+// such as: ch.Regex("naem", "le") 查询name字段包含le的数据
+func (ch *Chain) Regex(filed, content string) *Chain {
+	ch.condStorage[filed] = primitive.Regex{
+		Pattern: content,
+	}
 	return ch
 }

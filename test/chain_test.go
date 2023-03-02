@@ -195,3 +195,13 @@ func TestChainUpsertOne(t *testing.T) {
 	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Where("age", 18).UpsertOne(content, defaultContent)
 	require.Nil(t, err)
 }
+
+func TestChainRegex(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	res := &result{}
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Regex("name", "le").FindOne(res)
+	require.Nil(t, err)
+	require.Equal(t, "leslie", res.Name)
+}
