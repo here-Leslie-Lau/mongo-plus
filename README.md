@@ -16,7 +16,7 @@
 ## 快速开始
 
 ```shell
-go get -u github.com/here-Leslie-Lau/mongo-plus/mongo
+go get -u github.com/here-Leslie-Lau/mongo-plus
 ```
 
 创建mongodb连接
