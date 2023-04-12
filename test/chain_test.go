@@ -205,3 +205,17 @@ func TestChainRegex(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, "leslie", res.Name)
 }
+
+func TestChainOr(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	orMap := map[string]interface{}{
+		"name":  "leslie",
+		"value": 50,
+	}
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Or(orMap).Find(&list)
+	require.Nil(t, err)
+	require.Equal(t, 3, len(list))
+}

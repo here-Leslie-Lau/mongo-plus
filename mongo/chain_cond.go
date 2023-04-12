@@ -219,3 +219,14 @@ func (ch *Chain) Regex(filed, content string) *Chain {
 	}
 	return ch
 }
+
+// Or 或运算
+// such as: ch.Or(map[string]interface{}{"name": "leslie", "age": 18}) 筛选name为leslie或者age为18的文档
+func (ch *Chain) Or(filter map[string]interface{}) *Chain {
+	mList := []bson.M{}
+	for k, v := range filter {
+		mList = append(mList, bson.M{k: v})
+	}
+	ch.condStorage["$or"] = mList
+	return ch
+}
