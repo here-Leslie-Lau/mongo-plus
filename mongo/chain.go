@@ -123,6 +123,9 @@ func (ch *Chain) Paginate(f *PageFilter, des interface{}) (err error) {
 	}
 	if f.PageSize > 0 && f.PageNum > 0 {
 		f.TotalPage = f.TotalCount / f.PageSize
+		if f.TotalPage == 0 {
+			f.TotalPage += 1
+		}
 		ch.Skip((f.PageNum - 1) * f.PageSize).Limit(f.PageSize)
 	}
 
