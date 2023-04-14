@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
@@ -218,4 +219,25 @@ func TestChainOr(t *testing.T) {
 	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Or(orMap).Find(&list)
 	require.Nil(t, err)
 	require.Equal(t, 3, len(list))
+}
+
+func TestChainOrs(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	var list []*result
+	orMap1 := map[string]interface{}{
+		"name":  "leslie",
+		"value": 22,
+	}
+	orMap2 := map[string]interface{}{
+		"name":  "skyle",
+		"value": 78,
+	}
+	// 查询{"name": "leslie", "value": 22}或{"name": "skyle", "value": 78}的数据
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Ors(orMap1, orMap2).Find(&list)
+	require.Nil(t, err)
+	for _, res := range list {
+		fmt.Printf("%+v\n", res)
+	}
 }

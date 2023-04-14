@@ -230,3 +230,10 @@ func (ch *Chain) Or(filter map[string]interface{}) *Chain {
 	ch.condStorage["$or"] = mList
 	return ch
 }
+
+// Ors 或运算
+// 具体例子参考test/chain_test.go.TestChainOrs用例
+func (ch *Chain) Ors(filters ...map[string]interface{}) *Chain {
+	ch.condStorage["$or"] = filters
+	return ch
+}
