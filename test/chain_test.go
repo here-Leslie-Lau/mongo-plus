@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/stretchr/testify/require"
 )
@@ -240,4 +241,22 @@ func TestChainOrs(t *testing.T) {
 	for _, res := range list {
 		fmt.Printf("%+v\n", res)
 	}
+}
+
+func TestIncOne(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	oid, err := primitive.ObjectIDFromHex("6275dffa95ce7e65f1abf26f")
+	require.Nil(t, err)
+	err = conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Where("_id", oid).IncOne("value", 20)
+	require.Nil(t, err)
+}
+
+func TestInc(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+
+	err := conn.Collection(&demo{collName: "demo"}).WithCtx(context.TODO()).Where("name", "skyle").Inc("value", 20)
+	require.Nil(t, err)
 }

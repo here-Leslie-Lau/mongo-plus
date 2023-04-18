@@ -77,20 +77,20 @@ func (ch *Chain) InsertMany(docs []interface{}) error {
 }
 
 // UpdateOne 根据chain的条件更新指定的一条文档, updateMap为更新的内容
-func (ch *Chain) UpdateOne(ctx context.Context, updateMap map[string]interface{}) error {
+func (ch *Chain) UpdateOne(updateMap map[string]interface{}) error {
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
-	_, err := ch.coll.UpdateOne(ctx, f, updateContent)
+	_, err := ch.coll.UpdateOne(ch.ctx, f, updateContent)
 	return err
 }
 
 // Update 根据chain的条件更新指定的文档, updateMap为更新的内容
-func (ch *Chain) Update(ctx context.Context, updateMap map[string]interface{}) error {
+func (ch *Chain) Update(updateMap map[string]interface{}) error {
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
-	_, err := ch.coll.UpdateMany(ctx, f, updateContent)
+	_, err := ch.coll.UpdateMany(ch.ctx, f, updateContent)
 	return err
 }
 
@@ -172,4 +172,28 @@ func (ch *Chain) UpsertOne(content, defaultContent map[string]interface{}) error
 	}
 
 	return nil
+}
+
+// IncOne 给一个文档字段增加或减少指定的数字
+// such as: ch.Where("name", "leslie").IncOne("age", 1) 代表给name为leslie的单个文档, age加一
+func (ch *Chain) IncOne(field string, incNums int64) error {
+	f := bson.M(ch.condStorage)
+
+	updateContent := bson.D{bson.E{Key: "$inc", Value: map[string]interface{}{field: incNums}}}
+	_, err := ch.coll.UpdateOne(ch.ctx, f, updateContent)
+	return err
+}
+
+// Inc 给多个文档字段增加或减少指定的数字
+// such as: ch.Where("name", "leslie").IncOne("age", 1) 代表给name为leslie的所有文档, age加一
+func (ch *Chain) Inc(field string, incNums int64) error {
+	if len(ch.condStorage) == 0 {
+		// 避免操作整个集合, 直接返回错误
+		return errors.New("chain condStorage is zero, Inc fail")
+	}
+	f := bson.M(ch.condStorage)
+
+	updateContent := bson.D{bson.E{Key: "$inc", Value: map[string]interface{}{field: incNums}}}
+	_, err := ch.coll.UpdateMany(ch.ctx, f, updateContent)
+	return err
 }
