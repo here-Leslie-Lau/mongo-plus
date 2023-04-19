@@ -42,3 +42,19 @@ type SortRule struct {
 	// 排序字段名
 	Field string
 }
+
+// AggregateOpe 聚合操作表达式
+type AggregateOpe string
+
+func (a AggregateOpe) String() string {
+	return string(a)
+}
+
+const (
+	// AggregateOpeGroup 分组
+	AggregateOpeGroup AggregateOpe = "$group"
+	// AggregateOpeMatch 匹配
+	AggregateOpeMatch AggregateOpe = "$match"
+	AggregateOpeSum   AggregateOpe = "$sum"
+	AggregateOpeSort AggregateOpe = "$sort"
+)
