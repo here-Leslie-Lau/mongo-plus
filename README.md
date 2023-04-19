@@ -137,6 +137,21 @@ conn.Where("name", "leslie").UpsertOne(content, default)
 // 期望结果, 如果name为leslie的文档存在, 则将age更新为18, 否则插入一条{"name": "leslie", "age": 18}的文档
 ```
 
+Or查询(或运算查询)
+
+```go
+// 单条件
+orMap := map[string]interface{}{"age": 18, "name": "leslie"}
+// 查询name为leslie或者age为18的文档
+conn.Or(orMap).Find(&documents)
+
+// 多条件
+orMap1 := map[string]interface{}{"name": "leslie", "value": 22}
+orMap2 := map[string]interface{}{"name": "skyle", "value": 78}
+// 查询name为leslie,age为22或者name为skyle,age为78的文档
+conn.Ors(orMap1, orMap2).Find(&documents)
+```
+
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
 ## Benchmark
@@ -203,30 +218,6 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
     └── conn_test.go	// 测试用例的初始化封装
 ```
 
-## 版本管理
-
-**v0.1(现在):**
-
-1. 基本的curd
-2. 分页封装
-3. 达到开发者学习或基本使用`mongodb`的标准(基本功能支持)
-
-**v0.2:**
-
-1. gitbook文档支持
-2. 完善的测试用例
-3. 基准测试
-
-**v0.3**
-
-1. 事务支持
-2. Aggregation支持
-3. 操作集合、库级别的支持
-
-**v2.0**
-
-1. 去除官方驱动的依赖(待研究)
-
 ## 如何贡献
 
 step one:
@@ -244,3 +235,5 @@ step two:
 _tips: 或直接提issue_
 
 ## 捐赠
+
+star一下即可~
