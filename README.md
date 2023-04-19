@@ -146,8 +146,8 @@ orMap := map[string]interface{}{"age": 18, "name": "leslie"}
 conn.Or(orMap).Find(&documents)
 
 // 多条件
-orMap1 := map[string]interface{}{"name": "leslie", "value": 22}
-orMap2 := map[string]interface{}{"name": "skyle", "value": 78}
+orMap1 := map[string]interface{}{"name": "leslie", "age": 22}
+orMap2 := map[string]interface{}{"name": "skyle", "age": 78}
 // 查询name为leslie,age为22或者name为skyle,age为78的文档
 conn.Ors(orMap1, orMap2).Find(&documents)
 ```
