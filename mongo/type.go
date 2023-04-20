@@ -55,6 +55,10 @@ const (
 	AggregateOpeGroup AggregateOpe = "$group"
 	// AggregateOpeMatch 匹配
 	AggregateOpeMatch AggregateOpe = "$match"
+	// AggregateOpeSum 计算总和
 	AggregateOpeSum   AggregateOpe = "$sum"
-	AggregateOpeSort AggregateOpe = "$sort"
+	// AggregateOpeSort 排序
+	AggregateOpeSort  AggregateOpe = "$sort"
+	// AggregateOpeAvg 计算平均值
+	AggregateOpeAvg   AggregateOpe = "$avg"
 )

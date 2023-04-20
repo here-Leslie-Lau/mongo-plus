@@ -34,3 +34,21 @@ func (ch *Chain) GetMatchStage(filed, val string) bson.D {
 		},
 	}
 }
+
+// GetGroupStage 获取$group的stage
+// groupFiled: 要分组的字段名, subStages: 子stage, 如果需要则传入, 每个子stage数组长度需为1
+func (ch *Chain) GetGroupStage(groupFiled string, subStages ...bson.D) bson.D {
+	valueBson := bson.D{{Key: "_id", Value: groupFiled}}
+	d := bson.D{{Key: AggregateOpeGroup.String()}}
+
+	for _, stage := range subStages {
+		valueBson = append(valueBson, stage[0])
+	}
+
+	d[0].Value = valueBson
+	return d
+}
+
+func (ch *Chain) GetAvgStage(calledFiled, filed string) bson.D {
+	panic("TODO implement")
+}
