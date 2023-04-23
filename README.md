@@ -198,24 +198,27 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 
 ```shell
 .
-├── LICENSE
-├── README.md			// 项目介绍文档
-├── docs				// 项目文档
+├── docs							// 项目文档
 ├── go.mod
 ├── go.sum
-├── makefile			// 一些初始化工具
-├── mongo
-│   ├── chain.go		// 核心结构体-chain定义, 与操作mongodb方法封装
-│   ├── chain_cond.go	// 调用链条件拼接逻辑
-│   ├── collection.go	// collection接口定义
-│   ├── config.go		// 连接mongodb配置定义
-│   ├── conn.go			// 获取连接逻辑及一些初始化方法
-│   ├── paginate.go		// 分页逻辑封装
-│   └── type.go			// mongodb类型定义
+├── LICENSE
+├── makefile						// 一些初始化工具
+├── mongo							// 核心逻辑包
+│   ├── aggregate.go				// mongodb聚合操作逻辑(aggregate)
+│   ├── aggregate_group.go			// 聚合操作中group逻辑
+│   ├── chain_cond.go				// 调用链条件拼接逻辑
+│   ├── chain.go					// 核心结构体-chain定义, 与操作mongodb方法封装
+│   ├── collection.go				// collection接口定义
+│   ├── config.go					// 连接mongodb配置定义
+│   ├── conn.go						// 获取连接逻辑及一些初始化方法
+│   ├── paginate.go					// 分页逻辑封装
+│   └── type.go						// mongodb类型定义
+├── README.md						// 项目介绍文档
 └── test
-    ├── bench_test.go	// golang基准测试
-    ├── chain_test.go	// 单元测试与用法事例
-    └── conn_test.go	// 测试用例的初始化封装
+    ├── aggregate_test.go			// 聚合操作单元测试与用法示例
+    ├── bench_test.go				// golang基准测试
+    ├── chain_test.go				// 单元测试与用法示例
+    └── conn_test.go				// 测试用例的初始化封装
 ```
 
 ## 如何贡献
