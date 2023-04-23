@@ -3,8 +3,6 @@
 package mongo
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,31 +35,15 @@ func (ch *Chain) GetMatchStage(filed, val string) bson.D {
 	}
 }
 
-// GetGroupStage 获取$group的stage
-// groupFiled: 要分组的字段名, subStages: 子stage, 如果需要则传入
-// tips: 目前该库只提供少量stage支持, 也可以自定义bson传入
-func (ch *Chain) GetGroupStage(groupFiled string, subStages ...bson.D) bson.D {
-	valueBson := bson.D{{Key: "_id", Value: fmt.Sprintf("$%s", groupFiled)}}
-	d := bson.D{{Key: AggregateOpeGroup.String()}}
-
-	for _, stage := range subStages {
-		valueBson = append(valueBson, stage...)
+func (ch *Chain) GetSortStage(rules ...SortRule) bson.D {
+	d := bson.D{}
+	for _, rule := range rules {
+		d = append(d, bson.E{Key: rule.Field, Value: rule.Typ})
 	}
-
-	d[0].Value = valueBson
-	return d
-}
-
-func (ch *Chain) GetAvgStage(calledFiled, filed string) bson.D {
-	d := bson.D{{Key: calledFiled}}
-	filed = fmt.Sprintf("$%s", filed)
-	d[0].Value = bson.D{{Key: AggregateOpeAvg.String(), Value: filed}}
-	return d
-}
-
-func (ch *Chain) GetSumStage(calledFiled, filed string) bson.D {
-	d := bson.D{{Key: calledFiled}}
-	filed = fmt.Sprintf("$%s", filed)
-	d[0].Value = bson.D{{Key: AggregateOpeSum.String(), Value: filed}}
-	return d
+	return bson.D{
+		{
+			Key:   AggregateOpeSort.String(),
+			Value: d,
+		},
+	}
 }

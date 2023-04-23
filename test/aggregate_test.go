@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"github.com/stretchr/testify/require"
 )
 
@@ -59,6 +60,25 @@ func TestGroupStage(t *testing.T) {
 
 	err := ch.Aggregate(&list, groupStage)
 	require.Nil(t, err)
+	for _, res := range list {
+		fmt.Printf("%+v\n", res)
+	}
+}
+
+func TestSortStage(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+	ch := conn.Collection(&demo{collName: "demo"})
+
+	var list []*result
+	rules := []mongo.SortRule{
+		{Typ: mongo.SortTypeDESC, Field: "value"},
+	}
+
+	sortStage := ch.GetSortStage(rules...)
+	err := ch.Aggregate(&list, sortStage)
+	require.Nil(t, err)
+
 	for _, res := range list {
 		fmt.Printf("%+v\n", res)
 	}
