@@ -53,7 +53,10 @@ func (ch *Chain) GetGroupStage(groupFiled string, subStages ...bson.D) bson.D {
 }
 
 func (ch *Chain) GetAvgStage(calledFiled, filed string) bson.D {
-	panic("TODO implement")
+	d := bson.D{{Key: calledFiled}}
+	filed = fmt.Sprintf("$%s", filed)
+	d[0].Value = bson.D{{Key: AggregateOpeAvg.String(), Value: filed}}
+	return d
 }
 
 func (ch *Chain) GetSumStage(calledFiled, filed string) bson.D {

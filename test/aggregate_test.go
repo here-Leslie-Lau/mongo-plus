@@ -32,7 +32,6 @@ func TestSumAndGroupStage(t *testing.T) {
 	var list []*result
 	sumStage := ch.GetSumStage("value", "value")
 	groupStage := ch.GetGroupStage("name", sumStage)
-	fmt.Println("+++", groupStage)
 
 	err := ch.Aggregate(&list, groupStage)
 	require.Nil(t, err)
@@ -40,4 +39,27 @@ func TestSumAndGroupStage(t *testing.T) {
 		fmt.Printf("%+v\n", res)
 	}
 
+}
+
+type testStage struct {
+	ID       string `json:"_id" bson:"_id"`
+	TotalSum int64  `json:"total_sum" bson:"total_sum"`
+	Avg      int64  `json:"avg" bson:"avg"`
+}
+
+func TestGroupStage(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+	ch := conn.Collection(&demo{collName: "demo"})
+
+	var list []*testStage
+	avgStage := ch.GetAvgStage("avg", "value")
+	totalSumStage := ch.GetSumStage("total_sum", "value")
+	groupStage := ch.GetGroupStage("name", totalSumStage, avgStage)
+
+	err := ch.Aggregate(&list, groupStage)
+	require.Nil(t, err)
+	for _, res := range list {
+		fmt.Printf("%+v\n", res)
+	}
 }
