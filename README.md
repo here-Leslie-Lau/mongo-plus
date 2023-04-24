@@ -1,4 +1,4 @@
-# mongo-plus  [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://img.shields.io/badge/build-passing-brightgreen.svg) [![](https://img.shields.io/badge/version-v0.1-orange.svg)](https://img.shields.io/badge/version-v0.1-orange.svg) [![](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)
+# mongo-plus  [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://img.shields.io/badge/build-passing-brightgreen.svg) [![](https://img.shields.io/badge/version-v1.0-orange.svg)](https://img.shields.io/badge/version-v1.0-orange.svg) [![](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)
 
 ![](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/mongo-plus.png)
 
@@ -6,11 +6,12 @@
 
 ## 特性
 
-- 调用链操作
+- 调用链操作, 自由组合条件
 - api友好
 - 支持Context
 - 开箱即用
 - 分页查询支持
+- 简易的聚合(aggregate)支持
 - 持续更新ing
 
 ## 快速开始
@@ -189,10 +190,6 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 - 当进行`mongodb`操作时，需要把官方驱动的各种Option对象准备好，再一口气传入。或许是`gorm`的调用链方式深得我心😄 ,所以也想封装成类似的方式。
 - 官方驱动没有提供比较好的分页方式，_(例如:根据前端或客户端传入的页数/页码大小，获得相应的总页数/总条数)_ 每次都需要再次封装。
 - 我认为一个库需要尽量屏蔽细节，使用者不应该多关注底层实现，开箱即用。_(比如开发者无需了解bson, $gt各种运算符, 分片等)_
-
-**与官方mongodb驱动对比:**
-
-- [ ] TODO
 
 ## 项目结构
 
