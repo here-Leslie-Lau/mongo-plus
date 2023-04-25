@@ -83,3 +83,37 @@ func TestSortStage(t *testing.T) {
 		fmt.Printf("%+v\n", res)
 	}
 }
+
+func TestLimitAndSkipStage(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+	ch := conn.Collection(&demo{collName: "demo"})
+
+	var list []*result
+
+	limitStage := ch.GetLimitStage(2)
+	skipStage := ch.GetSkipStage(2)
+	err := ch.Aggregate(&list, skipStage, limitStage)
+	require.Nil(t, err)
+	require.Equal(t, 2, len(list))
+
+	for _, res := range list {
+		fmt.Printf("%+v\n", res)
+	}
+}
+
+func TestUnsetStage(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+	ch := conn.Collection(&demo{collName: "demo"})
+
+	var list []*result
+	matchStage := ch.GetMatchStage("name", "leslie")
+	unsetStage := ch.GetUnsetStage("_id", "value")
+	err := ch.Aggregate(&list, matchStage, unsetStage)
+	require.Nil(t, err)
+
+	for _, res := range list {
+		fmt.Printf("%+v\n", res)
+	}
+}

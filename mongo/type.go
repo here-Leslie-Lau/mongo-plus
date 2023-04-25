@@ -56,9 +56,15 @@ const (
 	// AggregateOpeMatch 匹配
 	AggregateOpeMatch AggregateOpe = "$match"
 	// AggregateOpeSum 计算总和
-	AggregateOpeSum   AggregateOpe = "$sum"
+	AggregateOpeSum AggregateOpe = "$sum"
 	// AggregateOpeSort 排序
-	AggregateOpeSort  AggregateOpe = "$sort"
+	AggregateOpeSort AggregateOpe = "$sort"
 	// AggregateOpeAvg 计算平均值
-	AggregateOpeAvg   AggregateOpe = "$avg"
+	AggregateOpeAvg AggregateOpe = "$avg"
+	// AggregateopeLimit 限制记录数
+	AggregateopeLimit AggregateOpe = "$limit"
+	// AggregateOpeSkip 跳过指定记录数
+	AggregateOpeSkip  AggregateOpe = "$skip"
+	// AggregateOpeUnset 忽略相关字段
+	AggregateOpeUnset AggregateOpe = "$unset"
 )

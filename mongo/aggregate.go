@@ -47,3 +47,30 @@ func (ch *Chain) GetSortStage(rules ...SortRule) bson.D {
 		},
 	}
 }
+
+func (ch *Chain) GetLimitStage(num int64) bson.D {
+	return bson.D{
+		{
+			Key:   AggregateopeLimit.String(),
+			Value: num,
+		},
+	}
+}
+
+func (ch *Chain) GetSkipStage(num int64) bson.D {
+	return bson.D{
+		{
+			Key:   AggregateOpeSkip.String(),
+			Value: num,
+		},
+	}
+}
+
+func (ch *Chain) GetUnsetStage(fileds ...string) bson.D {
+	return bson.D{
+		{
+			Key: AggregateOpeUnset.String(),
+			Value: fileds,
+		},
+	}
+}
