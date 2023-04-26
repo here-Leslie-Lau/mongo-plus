@@ -42,3 +42,51 @@ matchStage := ch.GetMatchStage("name", "leslie")
 sortStage := ch.GetSortStage(mongo.SortRule{Typ: mongo.SortTypeDESC, Field: "age"})
 ch.Aggregate(&documents, matchStage, sortStage)
 ```
+
+**获取limit stage**
+
+```go
+func (ch *Chain) GetLimitStage(num int64) bson.D
+```
+
+请求参数说明 num: 要限制的文档数
+
+example:
+
+```go
+// 查询2条文档
+limitStage := ch.GetLimitStage(2)
+ch.Aggregate(&documents, limitStage)
+```
+
+**获取skip stage**
+
+```go
+func (ch *Chain) GetSkipStage(num int64) bson.D
+```
+
+请求参数说明 num: 要跳过的文档数
+
+example:
+
+```go
+// 跳过前两条文档, 查询之后的两条文档, 并将结果集保存至documents内
+skipStage := ch.GetSkipStage(2)
+limitStage := ch.GetLimitStage(2)
+ch.Aggregate(&documents, skipStage, limitStage)
+```
+
+**获取unset stage**
+
+```go
+func (ch *Chain) GetUnsetStage(fileds ...string) bson.D
+```
+
+请求参数说明 fileds: 要忽略的字段名
+
+example:
+
+```go
+unsetStage := ch.GetUnsetStage("name", "age")
+ch.Aggregate(&documents, unsetStage)
+```

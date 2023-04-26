@@ -8,6 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Aggregate 聚合操作
+// des: 聚合操作后的结果集(指针), stages: 对应的stage集合, 按顺序排列
+// stages可以调用chain.GetXXXStage获取, 如果不满足则自定义bson.D传入
 func (ch *Chain) Aggregate(des interface{}, stages ...bson.D) error {
 	if len(stages) == 0 {
 		return errors.New("invalid params")
@@ -35,6 +38,8 @@ func (ch *Chain) GetMatchStage(filed, val string) bson.D {
 	}
 }
 
+// GetSortStage 获取$sort的stage
+// rules: 具体的排序规则集合, 可参考mongo.SortRule
 func (ch *Chain) GetSortStage(rules ...SortRule) bson.D {
 	d := bson.D{}
 	for _, rule := range rules {
@@ -48,6 +53,8 @@ func (ch *Chain) GetSortStage(rules ...SortRule) bson.D {
 	}
 }
 
+// GetLimitStage 获取$limit的stage
+// num: 限制的文档数
 func (ch *Chain) GetLimitStage(num int64) bson.D {
 	return bson.D{
 		{
@@ -57,6 +64,8 @@ func (ch *Chain) GetLimitStage(num int64) bson.D {
 	}
 }
 
+// GetSkipStage 获取$skip的stage
+// num: 要跳过的文档数
 func (ch *Chain) GetSkipStage(num int64) bson.D {
 	return bson.D{
 		{
@@ -66,10 +75,12 @@ func (ch *Chain) GetSkipStage(num int64) bson.D {
 	}
 }
 
+// GetUnsetStage 获取$unset的stage
+// fileds: 要忽略的字段
 func (ch *Chain) GetUnsetStage(fileds ...string) bson.D {
 	return bson.D{
 		{
-			Key: AggregateOpeUnset.String(),
+			Key:   AggregateOpeUnset.String(),
 			Value: fileds,
 		},
 	}
