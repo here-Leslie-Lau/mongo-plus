@@ -6,6 +6,9 @@
 * [获取limit stage](#获取limit-stage)
 * [获取skip stage](#获取skip-stage)
 * [获取unset stage](#获取unset-stage)
+* [获取group stage](#获取group-stage)
+  * [获取avg stage](#获取avg-stage)
+  * [获取sum stage](#获取sum-stage)
 
 ## 调用Aggregate方法完成聚合操作
 
@@ -96,4 +99,49 @@ example:
 ```go
 unsetStage := ch.GetUnsetStage("name", "age")
 ch.Aggregate(&documents, unsetStage)
+```
+
+## 获取group stage
+
+```go
+func (ch *Chain) GetGroupStage(groupFiled string, subStages ...bson.D) bson.D
+```
+
+请求参数说明 groupFiled: 要分组的字段名, subStages: 子stage, 如果需要则传入
+tips: 目前该库只提供少量stage支持, 也可以自定义bson传入
+
+### 获取avg stage
+
+```go
+func (ch *Chain) GetAvgStage(calledFiled, filed string) bson.D
+```
+
+请求参数说明 calledFiled: 计算出平均值之后的字段命名, filed: 要计算平均值的字段
+该stage为group的子stage, 故一般与GetGroupStage组合使用, 作为subStages传入
+
+example:
+
+```go
+// 根据class分组, 计算每个class的age平均值, 最终结果保存至documents内
+avgStage := ch.GetAvgStage("age", "age")
+groupStage := ch.GetGroupStage("class", avgStage)
+ch.Aggregate(&documents, groupStage)
+```
+
+### 获取sum stage
+
+```go
+func (ch *Chain) GetSumStage(calledFiled, filed string) bson.D
+```
+
+请求参数说明 calledFiled: 计算出总和之后的字段命名, filed: 要计算总和的字段
+该stage为group的子stage, 故一般与GetGroupStage组合使用, 作为subStages传入
+
+example:
+
+```go
+// 根据class分组, 计算每个class的age总和, 总和命名为total_age, 最终结果保存至documents内
+sumStage := ch.GetSumStage("total_age", "age")
+groupStage := ch.GetGroupStage("class", sumStage)
+ch.Aggregate(&documents, groupStage)
 ```
