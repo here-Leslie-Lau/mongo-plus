@@ -64,7 +64,9 @@ const (
 	// AggregateopeLimit 限制记录数
 	AggregateopeLimit AggregateOpe = "$limit"
 	// AggregateOpeSkip 跳过指定记录数
-	AggregateOpeSkip  AggregateOpe = "$skip"
+	AggregateOpeSkip AggregateOpe = "$skip"
 	// AggregateOpeUnset 忽略相关字段
 	AggregateOpeUnset AggregateOpe = "$unset"
+	// AggregateOpeProject 只返回指定字段
+	AggregateOpeProject AggregateOpe = "$project"
 )

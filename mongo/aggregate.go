@@ -85,3 +85,16 @@ func (ch *Chain) GetUnsetStage(fileds ...string) bson.D {
 		},
 	}
 }
+
+func (ch *Chain) GetProjectStage(fileds ...string) bson.D {
+	m := bson.M{}
+	for _, filed := range fileds {
+		m[filed] = true
+	}
+	return bson.D{
+		{
+			Key:   AggregateOpeProject.String(),
+			Value: m,
+		},
+	}
+}
