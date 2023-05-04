@@ -46,3 +46,15 @@ func (ch *Chain) GetSumStage(calledFiled, filed string) bson.D {
 	d[0].Value = bson.D{{Key: AggregateOpeSum.String(), Value: filed}}
 	return d
 }
+
+func (ch *Chain) GetFirstStage(calledFiled, filed string) bson.D {
+	d := bson.D{{Key: calledFiled}}
+	d[0].Value = bson.D{{Key: AggregateOpeFirst.String(), Value: fmt.Sprintf("$%s", filed)}}
+	return d
+}
+
+func (ch *Chain) GetLastStage(calledFiled, filed string) bson.D {
+	d := bson.D{{Key: calledFiled}}
+	d[0].Value = bson.D{{Key: AggregateOpeLast.String(), Value: fmt.Sprintf("$%s", filed)}}
+	return d
+}

@@ -69,4 +69,8 @@ const (
 	AggregateOpeUnset AggregateOpe = "$unset"
 	// AggregateOpeProject 只返回指定字段
 	AggregateOpeProject AggregateOpe = "$project"
+	// AggregateOpeFirst 获取第一个文档数据
+	AggregateOpeFirst AggregateOpe = "$first"
+	// AggregateOpeLast 获取最后一个文档数据
+	AggregateOpeLast AggregateOpe = "$last"
 )
