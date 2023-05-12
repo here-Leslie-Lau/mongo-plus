@@ -87,7 +87,7 @@ func (ch *Chain) GetUnsetStage(fileds ...string) bson.D {
 }
 
 func (ch *Chain) GetProjectStage(fileds ...string) bson.D {
-	m := bson.M{}
+	m := bson.M{"_id": false}
 	for _, filed := range fileds {
 		m[filed] = true
 	}

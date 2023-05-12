@@ -117,3 +117,21 @@ func TestUnsetStage(t *testing.T) {
 		fmt.Printf("%+v\n", res)
 	}
 }
+
+func TestFirstAndLastStage(t *testing.T) {
+	conn, cancel := newConn()
+	defer cancel()
+	ch := conn.Collection(&demo{collName: "demo"})
+
+	var list []interface{}
+	firstStage := ch.GetFirstStage("result", "$ROOT")
+	groupStage := ch.GetGroupStage("name", firstStage)
+	projectStage := ch.GetProjectStage("result")
+	err := ch.Aggregate(&list, groupStage, projectStage)
+	require.Nil(t, err)
+
+	for _, v := range list{
+		fmt.Printf("%+v\n", v)
+	}
+
+}
