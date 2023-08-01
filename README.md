@@ -222,19 +222,9 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 
 ## 如何贡献
 
-step one:
+Options 1: Fork仓库，提交后发起`pull request`
 
-```shell
-git checkout -b feature/要添加的功能描述 origin/master
-# 开发自测完成后提交
-git add .
-git commit -m "功能描述"
-```
-
-step two:
-发起**pull/request**
-
-_tips: 或直接提issue_
+Options 2: 直接提交issue
 
 ## 捐赠
 
