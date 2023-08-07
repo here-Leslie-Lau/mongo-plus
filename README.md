@@ -226,6 +226,17 @@ Options 1: Fork仓库，提交后发起`pull request`
 
 Options 2: 直接提交issue
 
+## 版本规划
+
+| 版本号 | 完成状况 | 计划内容 |
+| --- | --- | --- |
+| v1.0.0 | 已完成 | mongodb基本操作(curd)、易用的聚合、分页操作 |
+| v1.0.1 | TODO | README.md与聚合操作文档增加英文文档 |
+| v1.0.2 | TODO | mongodb原生命令运行支持 |
+| v1.0.3 | TODO | mongodb集合级别操作支持(建立索引、自动生成集合等) |
+
+more and more...
+
 ## 捐赠
 
 star一下即可~
