@@ -23,7 +23,7 @@ jobs:
       - name: Set up Go🚀
         uses: actions/setup-go@v2 # 虚拟环境搭建go环境
         with:
-          go-version: 1.19
+          go-version: 1.20
 
       - name: Golang lint
         run: make init && make lint
