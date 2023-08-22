@@ -121,6 +121,7 @@ coll.NotEq("age", 100).FindOne(&document)
 ```
 
 指定要查询的字段
+
 ```go
 // 查询结果只对"name"字段赋值, 调用该方法后默认不对"_id"字段赋值
 coll.Projection("name").Find(&documents)
