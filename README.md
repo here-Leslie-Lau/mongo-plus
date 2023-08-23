@@ -1,162 +1,164 @@
 # mongo-plus  [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://img.shields.io/badge/build-passing-brightgreen.svg) [![](https://img.shields.io/badge/version-v1.0-orange.svg)](https://img.shields.io/badge/version-v1.0-orange.svg) [![](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)](https://img.shields.io/badge/golang-%3E%3D%201.18-red.svg)
 
+English | [中文](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/README_cn.md)
+
 ![](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/mongo-plus.png)
 
-基于mongo go官方驱动的二次封装
+A secondary encapsulation based on the official MongoDB Go driver.
 
-## 特性
+## Feature
 
-- 调用链操作, 自由组合条件
-- api友好
-- 支持Context
-- 开箱即用
-- 分页查询支持
-- [简易的聚合(aggregate)支持](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
-- 持续更新ing
+- Call chain operations, freely combine conditions
+- User-friendly API
+- Support for Context
+- Out-of-the-box functionality
+- Pagination query support
+- [Easy aggregation support](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
+- Continuously being updated
 
-## 快速开始
+## Quick Start
 
 ```shell
 go get -u github.com/here-Leslie-Lau/mongo-plus
 ```
 
-创建mongodb连接
+Create MongoDB Connection
 
 ```go
 opts := []mongo.Option{
-	// 要连接的数据库
+	// Database to Connect
 	mongo.WithDatabase("test"),
-	// 最大连接池数量
+	// Maximum Connection Pool Size
 	mongo.WithMaxPoolSize(10),
-	// 用户名
+	// Username
 	mongo.WithUsername("your username"),
-	// 密码
+	// Password
 	mongo.WithPassword("your password"),
-	// 连接url
+	// Connection URL
 	mongo.WithAddr("localhost:27017"),
 }
 conn, f := mongo.NewConn(opts...)
 defer f()
 ```
 
-获取collection对象
+Get Collection Object
 
 ```go
 type Demo struct{}
 
-// Collection 实现mongo.Collection接口, 返回要操作的集合名
+// Collection Implement the mongo.Collection interface, returning the name of the collection to operate on.
 func (d *Demo) Collection() string {
 	return "demo"
 }
 
-// 方法内获取collection对象
+// Get the collection object within the method.
 demo := &Demo{}
 coll := conn.Collection(demo)
 ```
 
-ctx支持
+Context Support
 
 ```go
 coll = coll.WithCtx(ctx)
 ```
 
-插入文档(insert)
+Insert Document
 
 ```go
 coll.InsertOne(document)
 coll.InsertMany(documents)
 ```
 
-查询文档
+Query Documents
 
 ```go
-// 查询name为leslie的单条文档
+// Query a Single Document with the name "leslie"
 coll.Where("name", "leslie").FindOne(&document)
-// 查询name为leslie的文档
+// Query Documents with the name "leslie"
 coll.Where("name", "leslie").Find(&documents)
-// 多条件查询
+// Multi-Condition Query
 coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
-查询满足条件的文档数
+Query the Number of Documents that Meet the Criteria
 
 ```go
-// 查询name为leslie的文档条数
+// Count of Documents with the name "leslie"
 cnt, err := coll.Where("name", "leslie").Count()
 ```
 
-排序
+Sorting
 
 ```go
-// 根据value字段升序查询
+// Query Ascending by the "value" Field
 coll.Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&documents)
 ```
 
-分页
+Pagination
 
 ```go
 f := &mongo.PageFilter{
-	// 当前查询第几页
+	// Current Page of the Query
 	PageNum:  1,
-	// 每页多少条
+	// Number of Items per Page
 	PageSize: 2,
 }
 
-// 根据条件将匹配文档塞入documents内, 并将总条数与总页数放入f内
+// Place matching documents into the "documents" based on the criteria and place the total count and total pages into the "f".
 coll.Paginate(f, &documents)
 ```
 
-逻辑操作
+Logical Operations
 
 ```go
-// 找到age大于18的单条记录
+// Find a Single Record with age Greater Than 18
 coll.Gt("age", 18).FindOne(&document)
-// 找到age小于18的单条记录
+// Find a Single Record with age Less Than 18
 coll.Lt("age", 18).FindOne(&document)
-// 找到age大于等于18的单条记录
+// Find a Single Record with age Greater Than or Equal to 18
 coll.Gte("age", 18).FindOne(&document)
-// 找到age不等于100的单条记录
+// Find a Single Record where age is Not Equal to 100
 coll.NotEq("age", 100).FindOne(&document)
-// ...其他方法可以参考mongo/chain_cond.go
+// ...other methods can be referenced in mongo/chain_cond.go
 ```
 
-指定要查询的字段
+Specify the Fields to Query
 
 ```go
-// 查询结果只对"name"字段赋值, 调用该方法后默认不对"_id"字段赋值
+// Query Results Only Assign to the "name" Field, After Calling This Method, the "_id" Field Is Not Assigned by Default
 coll.Projection("name").Find(&documents)
 ```
 
-更新或插入一条记录
+Update or Insert a Record
 
 ```go
-// 将age字段更新为18
+// Update the age Field to 18
 content := map[string]interface{}{"age": 18}
-// 如果筛选条件不存在, 要插入的默认值
+// Default Values to Insert if the Filter Criteria Do Not Exist
 default := map[string]interface{}{"name": "leslie"}
 
 conn.Where("name", "leslie").UpsertOne(content, default)
-// 期望结果, 如果name为leslie的文档存在, 则将age更新为18, 否则插入一条{"name": "leslie", "age": 18}的文档
+// Desired Outcome: If a document with name "leslie" exists, update the age to 18; otherwise, insert a document {"name": "leslie", "age": 18}.
 ```
 
-Or查询(或运算查询)
+OR Query (Logical OR Operation Query)
 
 ```go
-// 单条件
+// Single Condition
 orMap := map[string]interface{}{"age": 18, "name": "leslie"}
-// 查询name为leslie或者age为18的文档
+// Query Documents where name is "leslie" or age is 18
 conn.Or(orMap).Find(&documents)
 
-// 多条件
+// Multiple Conditions
 orMap1 := map[string]interface{}{"name": "leslie", "age": 22}
 orMap2 := map[string]interface{}{"name": "skyle", "age": 78}
-// 查询name为leslie,age为22或者name为skyle,age为78的文档
+// Query Documents where name is "leslie" and age is 22, or name is "skyle" and age is 78.
 conn.Ors(orMap1, orMap2).Find(&documents)
 ```
 
-[Aggregate操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
+[Aggregate Operation](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
 
-_其余文档补充中，更详细的用法参考test/chain_test.go_
+_Additional documentation can be found in the provided test/chain_test.go file for more detailed usage examples._
 
 ## Benchmark
 
@@ -167,7 +169,7 @@ memory: 8G
 make benchmark
 ```
 
-输出结果(其他方法补充中):
+Output Results (Other Methods Are Supplemented):
 
 ```shell
 $ make benchmark
@@ -184,60 +186,60 @@ PASS
 ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 ```
 
-## 初衷
+## Original Intention
 
-*平时在工作或者自己写点小东东时，使用mongo官方提供的 [go driver](https://www.mongodb.com/docs/drivers/go/current/) ，总感觉哪里不方便。*
+*When working or writing small pieces on my own, I often feel that using the official [Go driver](https://www.mongodb.com/docs/drivers/go/current/) provided by MongoDB is somewhat inconvenient.*
 
-个人总结了下，有一下几点
+I've summarized personally, and there are several points as follows:
 
-- 当进行`mongodb`操作时，需要把官方驱动的各种Option对象准备好，再一口气传入。或许是`gorm`的调用链方式深得我心😄 ,所以也想封装成类似的方式。
-- 官方驱动没有提供比较好的分页方式，_(例如:根据前端或客户端传入的页数/页码大小，获得相应的总页数/总条数)_ 每次都需要再次封装。
-- 我认为一个库需要尽量屏蔽细节，使用者不应该多关注底层实现，开箱即用。_(比如开发者无需了解bson, $gt各种运算符, 分片等)_
+- When performing mongodb operations, you need to prepare various Option objects from the official driver and pass them all at once. Maybe it's the call chain approach of gorm that resonates with me 😄, so I also want to encapsulate it in a similar way.
+- The official driver doesn't provide a very convenient way for pagination, _(for example: getting the total page count/total number of items based on the page number/page size passed from the frontend or client),_ so each time it needs to be encapsulated again.
+- I believe a library should try to shield the details as much as possible, and users shouldn't have to focus on the underlying implementation, making it ready to use. _(For example, developers shouldn't need to understand BSON, various operators like $gt, sharding, etc.)_
 
-## 项目结构
+## Project Structure
 
 ```shell
 .
-├── docs							// 项目文档
+├── docs							// project documentation
 ├── go.mod
 ├── go.sum
 ├── LICENSE
-├── makefile						// 一些初始化工具
-├── mongo							// 核心逻辑包
-│   ├── aggregate.go				// mongodb聚合操作逻辑(aggregate)
-│   ├── aggregate_group.go			// 聚合操作中group逻辑
-│   ├── chain_cond.go				// 调用链条件拼接逻辑
-│   ├── chain.go					// 核心结构体-chain定义, 与操作mongodb方法封装
-│   ├── collection.go				// collection接口定义
-│   ├── config.go					// 连接mongodb配置定义
-│   ├── conn.go						// 获取连接逻辑及一些初始化方法
-│   ├── paginate.go					// 分页逻辑封装
-│   └── type.go						// mongodb类型定义
-├── README.md						// 项目介绍文档
+├── makefile						// some initialization tools
+├── mongo							// core logic package
+│   ├── aggregate.go				// mongodb aggregation operation logic
+│   ├── aggregate_group.go			// group logic in aggregation operation
+│   ├── chain_cond.go				// call chain condition concatenation logic
+│   ├── chain.go					// core struct definition for chain and encapsulation of mongoDB operation methods
+│   ├── collection.go				// collection interface definition
+│   ├── config.go					// mongoDB connection configuration definition
+│   ├── conn.go						// connection retrieval logic and initialization methods
+│   ├── paginate.go					// pagination logic encapsulation
+│   └── type.go						// mongoDB type definitions
+├── README.md
 └── test
-    ├── aggregate_test.go			// 聚合操作单元测试与用法示例
-    ├── bench_test.go				// golang基准测试
-    ├── chain_test.go				// 单元测试与用法示例
-    └── conn_test.go				// 测试用例的初始化封装
+    ├── aggregate_test.go
+    ├── bench_test.go
+    ├── chain_test.go
+    └── conn_test.go
 ```
 
-## 如何贡献
+## How to Contribute
 
-Options 1: Fork仓库，提交后发起`pull request`
+Options 1: Fork the repository, make your changes, and then initiate a "pull request" to submit your changes.
 
-Options 2: 直接提交issue
+Options 2: Submit an Issue Directly
 
-## 版本规划
+## Version Planning
 
-| 版本号 | 完成状况 | 计划内容 |
+| Version | Status | Content |
 | --- | --- | --- |
-| v1.0.0 | 已完成 | mongodb基本操作(curd)、易用的聚合、分页操作 |
-| v1.0.1 | TODO | README.md与聚合操作文档增加英文文档 |
-| v1.0.2 | TODO | mongodb原生命令运行支持 |
-| v1.0.3 | TODO | mongodb集合级别操作支持(建立索引、自动生成集合等) |
+| v1.0.0 | <input type="checkbox" disabled checked> | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
+| v1.0.1 | <input type="checkbox" disabled> | Add english documentation |
+| v1.0.2 | <input type="checkbox" disabled> | Support for Running MongoDB Native Commands |
+| v1.0.3 | <input type="checkbox" disabled> | Support for Collection-Level Operations in MongoDB (Index Creation, Auto-Creation of Collections, etc.) |
 
 more and more...
 
-## 捐赠
+## Donation
 
-star一下即可~
+Just give it a star~
