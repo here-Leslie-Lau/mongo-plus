@@ -234,7 +234,7 @@ Options 2: Submit an Issue Directly
 | Version | Status | Content |
 | --- | --- | --- |
 | v1.0.0 | <input type="checkbox" disabled checked> | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
-| v1.0.1 | <input type="checkbox" disabled> | Add english documentation |
+| v1.0.1 | <input type="checkbox" disabled checked> | Add english documentation |
 | v1.0.2 | <input type="checkbox" disabled> | Support for Running MongoDB Native Commands |
 | v1.0.3 | <input type="checkbox" disabled> | Support for Collection-Level Operations in MongoDB (Index Creation, Auto-Creation of Collections, etc.) |
 
