@@ -28,3 +28,51 @@ func TestRunCommand(t *testing.T) {
 		fmt.Printf("%s: %v\n", k, v)
 	}
 }
+
+func TestIsMaster(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	res := make(map[string]interface{})
+	err := conn.IsMaster(context.TODO(), &res)
+	require.Nil(t, err)
+
+	for k, v := range res {
+		fmt.Printf("%s: %v\n", k, v)
+	}
+
+}
+
+func TestPing(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	err := conn.Ping(context.TODO())
+	require.Nil(t, err)
+}
+
+func TestDbStats(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	res := make(map[string]interface{})
+	err := conn.DbStats(context.TODO(), &res)
+	require.Nil(t, err)
+
+	for k, v := range res {
+		fmt.Printf("%s: %v\n", k, v)
+	}
+}
+
+func TestServerStatus(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	res := make(map[string]interface{})
+	err := conn.ServerStatus(context.TODO(), &res)
+	require.Nil(t, err)
+
+	for k, v := range res {
+		fmt.Printf("%s: %v\n", k, v)
+	}
+}
