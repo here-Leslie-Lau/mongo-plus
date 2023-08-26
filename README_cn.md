@@ -233,10 +233,10 @@ Options 2: 直接提交issue
 
 | 版本号 | 完成状况 | 计划内容 |
 | --- | --- | --- |
-| v1.0.0 | <input type="checkbox" disabled checked> | mongodb基本操作(curd)、易用的聚合、分页操作 |
-| v1.0.1 | <input type="checkbox" disabled checked> | README.md与聚合操作文档增加英文文档 |
-| v1.0.2 | <input type="checkbox" disabled> | mongodb原生命令运行支持 |
-| v1.0.3 | <input type="checkbox" disabled> | mongodb集合级别操作支持(建立索引、自动生成集合等) |
+| v1.0.0 | DONE | mongodb基本操作(curd)、易用的聚合、分页操作 |
+| v1.0.1 | DONE | README.md与聚合操作文档增加英文文档 |
+| v1.0.2 | TODO | mongodb数据库管理命令支持 |
+| v1.0.3 | TODO | 增加命令行工具支持(创建索引、初始化集合等) |
 
 more and more...
 

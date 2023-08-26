@@ -48,8 +48,3 @@ func (c *Conn) Collection(i Collection) *Chain {
 	ch.init()
 	return ch
 }
-
-// GetDB 获取go driver的database对象
-func (c *Conn) GetDB() *mongo.Database {
-	return c.db
-}
