@@ -7,12 +7,14 @@ on:
       - 'LICENSE'
       - '.gitignore'
       - 'README.md'
+      - 'docs/**'
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'LICENSE'
       - '.gitignore'
       - 'README.md'
+      - 'docs/**'
 
 jobs:
   lint:
