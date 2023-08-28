@@ -14,6 +14,7 @@ A secondary encapsulation based on the official MongoDB Go driver.
 - Out-of-the-box functionality
 - Pagination query support
 - [Easy aggregation support](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
+- [Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
 - Continuously being updated
 
 ## Quick Start
@@ -157,6 +158,8 @@ conn.Ors(orMap1, orMap2).Find(&documents)
 ```
 
 [Aggregate Operation](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
+
+[Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
 
 _Additional documentation can be found in the provided test/chain_test.go file for more detailed usage examples._
 

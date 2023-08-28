@@ -14,6 +14,7 @@
 - 开箱即用
 - 分页查询支持
 - [简易的聚合(aggregate)支持](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
+- [数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
 - 持续更新ing
 
 ## 快速开始
@@ -157,6 +158,8 @@ conn.Ors(orMap1, orMap2).Find(&documents)
 ```
 
 [Aggregate操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
+
+[数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
 
 _其余文档补充中，更详细的用法参考test/chain_test.go_
 
