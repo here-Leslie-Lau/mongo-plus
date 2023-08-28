@@ -238,7 +238,7 @@ Options 2: Submit an Issue Directly
 | --- | --- | --- |
 | v1.0.0 | DONE | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
 | v1.0.1 | DONE | Add english documentation |
-| v1.0.2 | TODO | Support for MongoDB database management commands |
+| v1.0.2 | DONE | Support for MongoDB database management commands |
 | v1.0.3 | TODO | Adding command-line tool support (creating indexes, initializing collections, etc.) |
 
 more and more...

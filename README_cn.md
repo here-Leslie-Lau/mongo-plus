@@ -238,7 +238,7 @@ Options 2: 直接提交issue
 | --- | --- | --- |
 | v1.0.0 | DONE | mongodb基本操作(curd)、易用的聚合、分页操作 |
 | v1.0.1 | DONE | README.md与聚合操作文档增加英文文档 |
-| v1.0.2 | TODO | mongodb数据库管理命令支持 |
+| v1.0.2 | DONE | mongodb数据库管理命令支持 |
 | v1.0.3 | TODO | 增加命令行工具支持(创建索引、初始化集合等) |
 
 more and more...
