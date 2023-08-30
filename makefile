@@ -12,3 +12,8 @@ lint:
 # golang benchmark
 benchmark:
 	cd test && go test -bench=. -benchmem -benchtime=1s -run=none
+
+.PHONY: build-cmds
+# build pkg cmds
+build-cmds:
+	go build -o bin/mongoplus-cmd ./cmds/cmds.go
