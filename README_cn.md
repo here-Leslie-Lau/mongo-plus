@@ -240,6 +240,7 @@ Options 2: 直接提交issue
 | v1.0.1 | DONE | README.md与聚合操作文档增加英文文档 |
 | v1.0.2 | DONE | mongodb数据库管理命令支持 |
 | v1.0.3 | TODO | 增加命令行工具支持(创建索引、初始化集合等) |
+| v1.0.4 | TODO | 事务支持 |
 
 more and more...
 
