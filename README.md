@@ -216,6 +216,7 @@ I've summarized personally, and there are several points as follows:
 │   ├── collection.go				// collection interface definition
 │   ├── config.go					// mongoDB connection configuration definition
 │   ├── conn.go						// connection retrieval logic and initialization methods
+│   ├── database.go                 // database management methods
 │   ├── paginate.go					// pagination logic encapsulation
 │   └── type.go						// mongoDB type definitions
 ├── README.md

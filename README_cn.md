@@ -216,6 +216,7 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 │   ├── collection.go				// collection接口定义
 │   ├── config.go					// 连接mongodb配置定义
 │   ├── conn.go						// 获取连接逻辑及一些初始化方法
+│   ├── database.go                 // 数据库管理相关方法
 │   ├── paginate.go					// 分页逻辑封装
 │   └── type.go						// mongodb类型定义
 ├── README.md						// 项目介绍文档
