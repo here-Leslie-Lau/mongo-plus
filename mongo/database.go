@@ -59,3 +59,18 @@ func (c *Conn) ServerStatus(ctx context.Context, des interface{}) error {
 	cmd := bson.D{{Key: "serverStatus", Value: 1}}
 	return c.RunCommand(ctx, cmd, des)
 }
+
+// CreateIndex 在集合中创建索引
+// 该命令返回索引的名称
+//
+// coll: 集合接口,参考mongo.Collection, indexs: 索引规则,参考mongo.SortRule
+func (c *Conn) CreateIndex(ctx context.Context, coll Collection, indexs ...SortRule) (string, error) {
+	key := bson.D{}
+	for _, index := range indexs {
+		key = append(key, bson.E{Key: index.Field, Value: index.Typ})
+	}
+	model := mongo.IndexModel{
+		Keys: key,
+	}
+	return c.GetDB().Collection(coll.Collection()).Indexes().CreateOne(ctx, model)
+}
