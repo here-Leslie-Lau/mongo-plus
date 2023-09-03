@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -75,4 +76,15 @@ func TestServerStatus(t *testing.T) {
 	for k, v := range res {
 		fmt.Printf("%s: %v\n", k, v)
 	}
+}
+
+func TestCreateIndex(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	d := &demo{collName: "demo"}
+	indexName, err := conn.CreateIndex(context.TODO(), d, mongo.SortRule{Field: "name", Typ: mongo.SortTypeASC})
+	require.Nil(t, err)
+
+	fmt.Println("index:", indexName)
 }
