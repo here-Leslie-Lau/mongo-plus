@@ -31,6 +31,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	// connect to mongodb
 	opts := []mongo.Option{
 		mongo.WithUsername(username),
 		mongo.WithPassword(pass),
