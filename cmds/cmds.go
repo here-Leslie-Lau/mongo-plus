@@ -1,42 +1,34 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"os"
+	"encoding/json"
+	"io/ioutil"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 )
 
-var (
-	username string
-	pass     string
-	databse  string
-	addr     string
-)
-
-func init() {
-	flag.StringVar(&username, "u", "", "mongodb username")
-	flag.StringVar(&pass, "p", "", "mongodb password")
-	flag.StringVar(&databse, "d", "", "mongodb database")
-	flag.StringVar(&addr, "addr", "localhost:27017", "mongodb address and port")
-}
-
 func main() {
-	flag.Parse()
-
-	if username == "" || pass == "" || databse == "" {
-		fmt.Println("u, p, d is required")
-		flag.Usage()
-		os.Exit(1)
+	// load json config
+	content, err := ioutil.ReadFile("cmds/conf.json")
+	if err != nil {
+		panic(err)
+	}
+	var cfg struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Database string `json:"database"`
+		Addr     string `json:"addr"`
+	}
+	if err := json.Unmarshal(content, &cfg); err != nil {
+		panic(err)
 	}
 
 	// connect to mongodb
 	opts := []mongo.Option{
-		mongo.WithUsername(username),
-		mongo.WithPassword(pass),
-		mongo.WithDatabase(databse),
-		mongo.WithAddr(addr),
+		mongo.WithUsername(cfg.Username),
+		mongo.WithPassword(cfg.Password),
+		mongo.WithDatabase(cfg.Database),
+		mongo.WithAddr(cfg.Addr),
 		mongo.WithMaxPoolSize(2),
 	}
 	_, f := mongo.NewConn(opts...)
