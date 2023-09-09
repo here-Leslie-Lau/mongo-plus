@@ -2,14 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"os"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 )
 
 func main() {
 	// load json config
-	content, err := ioutil.ReadFile("cmds/conf.json")
+	content, err := os.ReadFile("cmds/conf.json")
 	if err != nil {
 		panic(err)
 	}
@@ -33,4 +34,17 @@ func main() {
 	}
 	_, f := mongo.NewConn(opts...)
 	defer f()
+
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: mongoplus-cmd <subcommand> [options]")
+		os.Exit(1)
+	}
+
+	// parse subcommand
+	switch os.Args[1] {
+	case "create":
+		fmt.Println("TODO, create subcommand")
+	default:
+		fmt.Println("Unknown subcommand", os.Args[1])
+	}
 }
