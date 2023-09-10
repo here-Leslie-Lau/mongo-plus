@@ -16,4 +16,4 @@ benchmark:
 .PHONY: build-cmds
 # build pkg cmds
 build-cmds:
-	go build -o bin/mongoplus-cmd ./cmds/cmds.go
+	cd cmds && go build -o ../bin/mongoplus-cmd
