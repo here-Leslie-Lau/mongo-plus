@@ -248,3 +248,7 @@ more and more...
 ## Donation
 
 Just give it a star~
+
+## Star Charts
+
+[![Stargazers over time](https://starchart.cc/here-Leslie-Lau/mongo-plus.svg)](https://starchart.cc/here-Leslie-Lau/mongo-plus)
