@@ -35,9 +35,13 @@ TODO...
 
 ### 子命令
 
-TODO
-
 #### create
+
+- database
+
+- collection
+
+- index
 
 #### query
 
