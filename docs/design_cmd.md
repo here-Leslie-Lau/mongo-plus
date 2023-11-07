@@ -39,9 +39,15 @@ TODO...
 
 - database
 
+数据库
+
 - collection
 
+集合
+
 - index
+
+索引
 
 #### query
 
