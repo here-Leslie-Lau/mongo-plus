@@ -39,15 +39,11 @@ TODO...
 
 - database
 
-数据库
+command: `mongo-cli create database [database name]`
 
 - collection
 
-集合
-
 - index
-
-索引
 
 #### query
 
