@@ -252,3 +252,7 @@ star一下即可~
 ## Star图表
 
 [![Stargazers over time](https://starchart.cc/here-Leslie-Lau/mongo-plus.svg)](https://starchart.cc/here-Leslie-Lau/mongo-plus)
+
+## 许可证
+
+本项目基于MIT许可证发布，详情请参见[LICENSE](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/LICENSE)

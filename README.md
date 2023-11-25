@@ -252,3 +252,7 @@ Just give it a star~
 ## Star Charts
 
 [![Stargazers over time](https://starchart.cc/here-Leslie-Lau/mongo-plus.svg)](https://starchart.cc/here-Leslie-Lau/mongo-plus)
+
+## License
+
+Mongo-plus is licensed under the MIT License. See the [LICENSE](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/LICENSE)
