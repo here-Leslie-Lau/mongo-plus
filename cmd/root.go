@@ -5,6 +5,7 @@ Copyright © 2023 here-Leslie-Lau
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -17,6 +18,10 @@ var rootCmd = &cobra.Command{
 	Long: `"mongo-cli" is a tool for operating MongoDB databases or collections,
 	capable of simplifying related operations.
 	For mor information, run "mongo-cli --help" or "mongo-cli -h"`,
+	Run: func(cmd *cobra.Command, args []string) {
+		cfgStr, _ := cmd.Flags().GetString("cfg")
+		fmt.Println(cfgStr)
+	},
 }
 
 func main() {
@@ -31,5 +36,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().String("cfg", "conf.json", "config file path")
 }
