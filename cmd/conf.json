@@ -1,6 +1,0 @@
-{
-    "username": "your username",
-    "password": "your password",
-    "Addr": "localhost:27017",
-    "database": "test"
-}

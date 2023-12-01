@@ -35,6 +35,17 @@ TODO...
 
 ### 子命令
 
+#### init
+
+该命令主要用于初始化配置文件，配置文件主要用于连接数据库。
+
+flags:
+
+- addr
+- username
+- password
+- database
+
 #### create
 
 - database
