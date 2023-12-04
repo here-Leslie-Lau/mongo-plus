@@ -8,10 +8,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/user"
+	"path/filepath"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"github.com/spf13/cobra"
 )
+
+// The generated configuration file path
+var path string
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
@@ -19,10 +24,6 @@ var initCmd = &cobra.Command{
 	Short: "The command is used to initialize the configuration file, which is used for connecting to MongoDB.",
 	Long:  "The command is used to initialize the configuration file, which is used for connecting to MongoDB.",
 	Run: func(cmd *cobra.Command, args []string) {
-		path, err := cmd.Flags().GetString("path")
-		if err != nil {
-			panic(err)
-		}
 		addr, _ := cmd.Flags().GetString("addr")
 		username, _ := cmd.Flags().GetString("u")
 		passwd, _ := cmd.Flags().GetString("p")
@@ -57,7 +58,14 @@ func init() {
 	initCmd.Flags().String("u", "root", "The username of MongoDB")
 	initCmd.Flags().String("p", "root", "The password of MongoDB")
 	initCmd.Flags().String("db", "test", "The database of MongoDB")
-	initCmd.Flags().String("path", "cmd/conf.json", "The generated file path")
+
+	// generated configuration file path
+	user, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	homeDir := user.HomeDir
+	path = filepath.Join(homeDir, "mongo-plus.json")
 }
 
 // nolint
