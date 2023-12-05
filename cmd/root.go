@@ -6,9 +6,14 @@ package main
 
 import (
 	"os"
+	"os/user"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
+
+// The generated configuration file path
+var path string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -18,6 +23,16 @@ var rootCmd = &cobra.Command{
 	capable of simplifying related operations.
 	For more information, you can use "mongo-cli help" to query.
 	For more information about subcommands, you can use "mongo-cli [command] --help"`,
+}
+
+func init() {
+	// generated configuration file path
+	user, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	homeDir := user.HomeDir
+	path = filepath.Join(homeDir, "mongo-plus.json")
 }
 
 func main() {

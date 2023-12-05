@@ -8,15 +8,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"os/user"
-	"path/filepath"
 
 	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"github.com/spf13/cobra"
 )
-
-// The generated configuration file path
-var path string
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
@@ -58,14 +53,6 @@ func init() {
 	initCmd.Flags().String("u", "root", "The username of MongoDB")
 	initCmd.Flags().String("p", "root", "The password of MongoDB")
 	initCmd.Flags().String("db", "test", "The database of MongoDB")
-
-	// generated configuration file path
-	user, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
-	homeDir := user.HomeDir
-	path = filepath.Join(homeDir, "mongo-plus.json")
 }
 
 // nolint

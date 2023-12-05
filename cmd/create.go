@@ -5,8 +5,6 @@ Copyright © 2023 here-Leslie-Lau
 package main
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +14,6 @@ var createCmd = &cobra.Command{
 	Short: "This command is used to create indexes, etc.",
 	Long:  `This command is used to create indexes, etc.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create called")
 	},
 }
 
