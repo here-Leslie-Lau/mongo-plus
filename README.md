@@ -235,13 +235,14 @@ Options 2: Submit an Issue Directly
 
 ## Version Planning
 
-| Version | Status | Content |
-| --- | --- | --- |
-| v1.0.0 | DONE | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
-| v1.0.1 | DONE | Add english documentation |
-| v1.0.2 | DONE | Support for MongoDB database management commands |
-| v1.0.3 | TODO | Adding command-line tool support (creating indexes, initializing collections, etc.), use Cobra |
-| v1.0.3 | TODO | Transaction Support |
+| Status | Content |
+| --- | --- |
+| DONE | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
+| DONE | Add english documentation |
+| DONE | Support for MongoDB database management commands |
+| TODO | Adding command-line tool support (creating indexes, etc.), use Cobra |
+| TODO | Printing support for MongoDB native statements |
+| TODO | Transaction Support |
 
 more and more...
 

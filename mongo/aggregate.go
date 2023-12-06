@@ -29,7 +29,7 @@ func (ch *Chain) Aggregate(des interface{}, stages ...bson.D) error {
 
 // GetMatchStage 获取$match的stage
 // filed: 匹配的字段, val: 具体匹配值
-func (ch *Chain) GetMatchStage(filed, val string) bson.D {
+func (ch *Chain) GetMatchStage(filed string, val interface{}) bson.D {
 	return bson.D{
 		{
 			Key:   AggregateOpeMatch.String(),
