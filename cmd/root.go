@@ -33,6 +33,9 @@ func init() {
 	}
 	homeDir := user.HomeDir
 	path = filepath.Join(homeDir, "mongo-plus.json")
+
+	// load mongo conn from config file
+	loadConn(path)
 }
 
 func main() {

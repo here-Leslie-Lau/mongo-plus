@@ -13,7 +13,7 @@ lint:
 benchmark:
 	cd test && go test -bench=. -benchmem -benchtime=1s -run=none
 
-.PHONY: build-cmd
+.PHONY: build-helper
 # build pkg cmd
-build-cmd:
-	cd cmd && go build -o ../bin/mongo-cli
+build-helper:
+	cd cmd && go build -o ../bin/mongo-helper
