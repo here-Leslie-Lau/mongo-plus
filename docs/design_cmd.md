@@ -2,7 +2,7 @@
 
 ## 前言
 
-打算编写一个名为`mongo-cli`或者名为`mongoplus-plus`的工具。
+打算编写一个名为`mongo-helper`或者名为`mongoplus-plus`的工具。
 
 特性:
 
@@ -26,7 +26,7 @@
 ### 大命令
 
 ```shell
-mongo-cli help
+mongo-help help
 
 create 创建数据库、集合、索引等
 query 查询结果集, 条件方面的拼装目前还需要想想如何设计
@@ -50,7 +50,7 @@ flags:
 
 - database
 
-command: `mongo-cli create database [database name]`
+command: `mongo-helper create database [database name]`
 
 - collection
 

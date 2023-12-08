@@ -17,12 +17,12 @@ var path string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "mongo-cli init|create|query [flags]",
+	Use:   "mongo-helper init|create|query [flags]",
 	Short: "a tool for operating MongoDB databases or collections",
-	Long: `"mongo-cli" is a tool for operating MongoDB databases or collections,
+	Long: `"mongo-helper" is a tool for operating MongoDB databases or collections,
 	capable of simplifying related operations.
-	For more information, you can use "mongo-cli help" to query.
-	For more information about subcommands, you can use "mongo-cli [command] --help"`,
+	For more information, you can use "mongo-helper help" to query.
+	For more information about subcommands, you can use "mongo-helper [command] --help"`,
 }
 
 func init() {
