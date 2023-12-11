@@ -34,6 +34,11 @@ func init() {
 	homeDir := user.HomeDir
 	path = filepath.Join(homeDir, "mongo-plus.json")
 
+	_, err = os.Stat(path)
+	if os.IsNotExist(err) {
+		// config file not exist
+		return
+	}
 	// load mongo conn from config file
 	loadConn(path)
 }
