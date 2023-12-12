@@ -8,6 +8,8 @@ import (
 type config struct {
 	// 最大连接数
 	MaxPoolSize uint64
+	// 最小连接数
+	MinPoolSize uint64
 	// mongodb用户名
 	Username string
 	// mongodb密码
@@ -27,7 +29,12 @@ func (cfg *config) getOption() *options.ClientOptions {
 		Username: cfg.Username,
 		Password: cfg.Password,
 	}
-	opt.SetMaxPoolSize(cfg.MaxPoolSize)
+	if cfg.MaxPoolSize > 0 && cfg.MaxPoolSize > cfg.MinPoolSize {
+		opt.SetMaxPoolSize(cfg.MaxPoolSize)
+	}
+	if cfg.MinPoolSize > 0 {
+		opt.SetMinPoolSize(cfg.MinPoolSize)
+	}
 
 	// regist event
 	if cfg.PoolMonitor != nil {
@@ -59,6 +66,12 @@ func WithDatabase(dbName string) Option {
 func WithMaxPoolSize(maxPoolSize uint64) Option {
 	return func(cfg *config) {
 		cfg.MaxPoolSize = maxPoolSize
+	}
+}
+
+func WithMinPoolSize(minPoolSize uint64) Option {
+	return func(cfg *config) {
+		cfg.MinPoolSize = minPoolSize
 	}
 }
 

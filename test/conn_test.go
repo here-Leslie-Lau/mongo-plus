@@ -16,6 +16,7 @@ func newConn() (*mongo.Conn, func()) {
 	opts := []mongo.Option{
 		mongo.WithDatabase("test"),
 		mongo.WithMaxPoolSize(10),
+		mongo.WithMinPoolSize(1),
 		mongo.WithUsername("your username"),
 		mongo.WithPassword("your password"),
 		mongo.WithAddr("localhost:27017"),
