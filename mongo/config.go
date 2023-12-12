@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	"go.mongodb.org/mongo-driver/event"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -15,6 +16,8 @@ type config struct {
 	Database string
 	// mongodb连接的url
 	Addr []string
+	// 官方事件监听器
+	PoolMonitor *event.PoolMonitor
 }
 
 func (cfg *config) getOption() *options.ClientOptions {
@@ -26,6 +29,10 @@ func (cfg *config) getOption() *options.ClientOptions {
 	}
 	opt.SetMaxPoolSize(cfg.MaxPoolSize)
 
+	// regist event
+	if cfg.PoolMonitor != nil {
+		opt.SetPoolMonitor(cfg.PoolMonitor)
+	}
 	return opt
 }
 
@@ -58,5 +65,11 @@ func WithMaxPoolSize(maxPoolSize uint64) Option {
 func WithAddr(addrs ...string) Option {
 	return func(cfg *config) {
 		cfg.Addr = addrs
+	}
+}
+
+func WithPoolMonitor(poolMonitor *event.PoolMonitor) Option {
+	return func(cfg *config) {
+		cfg.PoolMonitor = poolMonitor
 	}
 }
