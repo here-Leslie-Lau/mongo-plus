@@ -42,8 +42,12 @@ func (cfg *config) getOption() *options.ClientOptions {
 	// regist event
 	if cfg.PoolMonitor != nil {
 		opt.SetPoolMonitor(cfg.PoolMonitor)
-	} else if cfg.CommandMonitor != nil {
+	}
+	if cfg.CommandMonitor != nil {
 		opt.SetMonitor(cfg.CommandMonitor)
+	}
+	if cfg.ServerMonitor != nil {
+		opt.SetServerMonitor(cfg.ServerMonitor)
 	}
 	return opt
 }
