@@ -18,9 +18,11 @@ type config struct {
 	Database string
 	// mongodb连接的url
 	Addr []string
+
 	// 官方事件监听器
 	PoolMonitor    *event.PoolMonitor
 	CommandMonitor *event.CommandMonitor
+	ServerMonitor  *event.ServerMonitor
 }
 
 func (cfg *config) getOption() *options.ClientOptions {
@@ -98,6 +100,12 @@ func WithCommandMonitor(commandMonitor *event.CommandMonitor) Option {
 	}
 }
 
+func WithServerMonitor(serverMonitor *event.ServerMonitor) Option {
+	return func(cfg *config) {
+		cfg.ServerMonitor = serverMonitor
+	}
+}
+
 // WithMonitor set monitor into config
 // monitor must be *event.PoolMonitor or *event.CommandMonitor
 // if monitor isn't these type, panic
@@ -107,6 +115,8 @@ func WithMonitor(monitor interface{}) Option {
 		return WithPoolMonitor(v)
 	case *event.CommandMonitor:
 		return WithCommandMonitor(v)
+	case *event.ServerMonitor:
+		return WithServerMonitor(v)
 	default:
 		panic("invalid monitor type")
 	}

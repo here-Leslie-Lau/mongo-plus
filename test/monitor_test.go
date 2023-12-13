@@ -26,7 +26,6 @@ func TestPoolMonitor(t *testing.T) {
 	}
 	conn, f := newConnWithMonitor(monitor)
 	defer f()
-
 	res := new(result)
 	err := conn.Collection(&demo{"demo"}).Where("name", "leslie").FindOne(res)
 	require.Nil(t, err)
@@ -89,4 +88,23 @@ func BenchmarkCommandMonitor(b *testing.B) {
 
 		require.Equal(b, "leslie", res.Name)
 	}
+}
+
+func TestServerMonitor(t *testing.T) {
+	monitor := &event.ServerMonitor{
+		TopologyOpening: func(_ *event.TopologyOpeningEvent) {
+			fmt.Println("TopologyOpening")
+		},
+		ServerClosed: func(_ *event.ServerClosedEvent) {
+			fmt.Println("ServerClosed")
+		},
+	}
+	conn, f := newConnWithMonitor(monitor)
+	defer f()
+
+	res := new(result)
+	err := conn.Collection(&demo{"demo"}).Where("name", "leslie").FindOne(res)
+	require.Nil(t, err)
+
+	require.Equal(t, "leslie", res.Name)
 }
