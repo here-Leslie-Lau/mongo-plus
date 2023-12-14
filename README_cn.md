@@ -15,6 +15,7 @@
 - 分页查询支持
 - [简易的聚合(aggregate)支持](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
 - [数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
+- monitor支持
 - 持续更新ing
 
 ## 快速开始
@@ -23,7 +24,7 @@
 go get -u github.com/here-Leslie-Lau/mongo-plus
 ```
 
-创建mongodb连接
+**创建mongodb连接**
 
 ```go
 opts := []mongo.Option{
@@ -42,7 +43,25 @@ conn, f := mongo.NewConn(opts...)
 defer f()
 ```
 
-获取collection对象
+**增加monitor支持**
+
+```go
+monitor := &event.CommandMonitor{
+	Started: func(_ context.Context, evt *event.CommandStartedEvent) {
+        fmt.Println("start")
+	},
+	Succeeded: func(_ context.Context, evt *event.CommandSucceededEvent) {
+        fmt.Println("success")
+	},
+}
+opts = append(opts, mongo.WithMonitor(monitor))
+conn, f := mongo.NewConn(opts...)
+defer f()
+```
+
+*目前monitor支持`*event.CommandMonitor, *event.PoolMonitor, *event.ServerMonitor`, 更多用例参考test/monitor_test.go*
+
+**获取collection对象**
 
 ```go
 type Demo struct{}
@@ -57,20 +76,20 @@ demo := &Demo{}
 coll := conn.Collection(demo)
 ```
 
-ctx支持
+**ctx支持**
 
 ```go
 coll = coll.WithCtx(ctx)
 ```
 
-插入文档(insert)
+**插入文档(insert)**
 
 ```go
 coll.InsertOne(document)
 coll.InsertMany(documents)
 ```
 
-查询文档
+**查询文档**
 
 ```go
 // 查询name为leslie的单条文档
@@ -81,21 +100,21 @@ coll.Where("name", "leslie").Find(&documents)
 coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
-查询满足条件的文档数
+**查询满足条件的文档数**
 
 ```go
 // 查询name为leslie的文档条数
 cnt, err := coll.Where("name", "leslie").Count()
 ```
 
-排序
+**排序**
 
 ```go
 // 根据value字段升序查询
 coll.Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&documents)
 ```
 
-分页
+**分页**
 
 ```go
 f := &mongo.PageFilter{
@@ -109,7 +128,7 @@ f := &mongo.PageFilter{
 coll.Paginate(f, &documents)
 ```
 
-逻辑操作
+**逻辑操作**
 
 ```go
 // 找到age大于18的单条记录
@@ -123,14 +142,14 @@ coll.NotEq("age", 100).FindOne(&document)
 // ...其他方法可以参考mongo/chain_cond.go
 ```
 
-指定要查询的字段
+**指定要查询的字段**
 
 ```go
 // 查询结果只对"name"字段赋值, 调用该方法后默认不对"_id"字段赋值
 coll.Projection("name").Find(&documents)
 ```
 
-更新或插入一条记录
+**更新或插入一条记录**
 
 ```go
 // 将age字段更新为18
@@ -142,7 +161,7 @@ conn.Where("name", "leslie").UpsertOne(content, default)
 // 期望结果, 如果name为leslie的文档存在, 则将age更新为18, 否则插入一条{"name": "leslie", "age": 18}的文档
 ```
 
-Or查询(或运算查询)
+**Or查询(或运算查询)**
 
 ```go
 // 单条件
