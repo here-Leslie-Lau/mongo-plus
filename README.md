@@ -15,6 +15,7 @@ A secondary encapsulation based on the official MongoDB Go driver.
 - Pagination query support
 - [Easy aggregation support](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
 - [Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
+- monitor support
 - Continuously being updated
 
 ## Quick Start
@@ -23,7 +24,7 @@ A secondary encapsulation based on the official MongoDB Go driver.
 go get -u github.com/here-Leslie-Lau/mongo-plus
 ```
 
-Create MongoDB Connection
+**Create MongoDB Connection**
 
 ```go
 opts := []mongo.Option{
@@ -42,7 +43,25 @@ conn, f := mongo.NewConn(opts...)
 defer f()
 ```
 
-Get Collection Object
+**Add monitor support**
+
+```go
+monitor := &event.CommandMonitor{
+	Started: func(_ context.Context, evt *event.CommandStartedEvent) {
+        fmt.Println("start")
+	},
+	Succeeded: func(_ context.Context, evt *event.CommandSucceededEvent) {
+        fmt.Println("success")
+	},
+}
+opts = append(opts, mongo.WithMonitor(monitor))
+conn, f := mongo.NewConn(opts...)
+defer f()
+```
+
+_The current monitor support includes `*event.CommandMonitor, *event.PoolMonitor, *event.ServerMonitor`. For more use cases, refer to test/monitor_test.go._
+
+**Get Collection Object**
 
 ```go
 type Demo struct{}
@@ -57,20 +76,20 @@ demo := &Demo{}
 coll := conn.Collection(demo)
 ```
 
-Context Support
+**Context Support**
 
 ```go
 coll = coll.WithCtx(ctx)
 ```
 
-Insert Document
+**Insert Document**
 
 ```go
 coll.InsertOne(document)
 coll.InsertMany(documents)
 ```
 
-Query Documents
+**Query Documents**
 
 ```go
 // Query a Single Document with the name "leslie"
@@ -81,21 +100,21 @@ coll.Where("name", "leslie").Find(&documents)
 coll.Filter(map[string]interface{}{"name": "leslie", "age": 18}).FindOne(&document)
 ```
 
-Query the Number of Documents that Meet the Criteria
+**Query the Number of Documents that Meet the Criteria**
 
 ```go
 // Count of Documents with the name "leslie"
 cnt, err := coll.Where("name", "leslie").Count()
 ```
 
-Sorting
+**Sorting**
 
 ```go
 // Query Ascending by the "value" Field
 coll.Sort(mongo.SortRule{Typ: mongo.SortTypeASC, Field: "value"}).Find(&documents)
 ```
 
-Pagination
+**Pagination**
 
 ```go
 f := &mongo.PageFilter{
@@ -109,7 +128,7 @@ f := &mongo.PageFilter{
 coll.Paginate(f, &documents)
 ```
 
-Logical Operations
+**Logical Operations**
 
 ```go
 // Find a Single Record with age Greater Than 18
@@ -123,14 +142,14 @@ coll.NotEq("age", 100).FindOne(&document)
 // ...other methods can be referenced in mongo/chain_cond.go
 ```
 
-Specify the Fields to Query
+**Specify the Fields to Query**
 
 ```go
 // Query Results Only Assign to the "name" Field, After Calling This Method, the "_id" Field Is Not Assigned by Default
 coll.Projection("name").Find(&documents)
 ```
 
-Update or Insert a Record
+**Update or Insert a Record**
 
 ```go
 // Update the age Field to 18
@@ -142,7 +161,7 @@ conn.Where("name", "leslie").UpsertOne(content, default)
 // Desired Outcome: If a document with name "leslie" exists, update the age to 18; otherwise, insert a document {"name": "leslie", "age": 18}.
 ```
 
-OR Query (Logical OR Operation Query)
+**OR Query (Logical OR Operation Query)**
 
 ```go
 // Single Condition
