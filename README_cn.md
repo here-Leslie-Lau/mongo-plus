@@ -59,7 +59,7 @@ conn, f := mongo.NewConn(opts...)
 defer f()
 ```
 
-*目前monitor支持`*event.CommandMonitor, *event.PoolMonitor, *event.ServerMonitor`, 更多用例参考test/monitor_test.go*
+_目前monitor支持`*event.CommandMonitor, *event.PoolMonitor, *event.ServerMonitor`, 更多用例参考test/monitor_test.go_
 
 **获取collection对象**
 
