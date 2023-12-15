@@ -48,10 +48,10 @@ defer f()
 ```go
 monitor := &event.CommandMonitor{
 	Started: func(_ context.Context, evt *event.CommandStartedEvent) {
-        fmt.Println("start")
+            fmt.Println("start")
 	},
 	Succeeded: func(_ context.Context, evt *event.CommandSucceededEvent) {
-        fmt.Println("success")
+            fmt.Println("success")
 	},
 }
 opts = append(opts, mongo.WithMonitor(monitor))
@@ -259,6 +259,7 @@ Options 2: 直接提交issue
 | DONE | mongodb基本操作(curd)、易用的聚合、分页操作 |
 | DONE | README.md与聚合操作文档增加英文文档 |
 | DONE | mongodb数据库管理命令支持 |
+| DONE | monitor支持 |
 | TODO | 增加命令行工具支持(创建索引等), 使用Cobra |
 | TODO | mongodb原生语句打印支持 |
 | TODO | 事务支持 |

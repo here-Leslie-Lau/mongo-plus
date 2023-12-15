@@ -48,10 +48,10 @@ defer f()
 ```go
 monitor := &event.CommandMonitor{
 	Started: func(_ context.Context, evt *event.CommandStartedEvent) {
-        fmt.Println("start")
+            fmt.Println("start")
 	},
 	Succeeded: func(_ context.Context, evt *event.CommandSucceededEvent) {
-        fmt.Println("success")
+            fmt.Println("success")
 	},
 }
 opts = append(opts, mongo.WithMonitor(monitor))
@@ -259,6 +259,7 @@ Options 2: Submit an Issue Directly
 | DONE | Basic MongoDB Operations (CRUD), User-Friendly Aggregation, Pagination Operations |
 | DONE | Add english documentation |
 | DONE | Support for MongoDB database management commands |
+| DONE | Monitor support |
 | TODO | Adding command-line tool support (creating indexes, etc.), use Cobra |
 | TODO | Printing support for MongoDB native statements |
 | TODO | Transaction Support |
