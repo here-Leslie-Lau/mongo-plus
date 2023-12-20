@@ -44,3 +44,35 @@ $ mongo-helper init
 load mongodb success...
 init ~/mongo-plus.json success...
 ```
+
+### create
+
+```
+$ mongo-helper create --help                                        
+该命令目前仅用于创建索引
+
+Usage:
+  mongo-helper create [flags]
+
+Flags:
+      --coll string      要操作的集合名字
+  -h, --help             帮助信息
+      --indexs strings   创建索引的字段格式为 '索引列_排序规则(1或-1)', 例如: 'name_1', 'age_-1', 'name_1_age_-1'
+      --ope string       需要执行的操作, 目前仅支持index(索引)
+```
+
+#### index
+
+在demo集合内创建一个复合索引, 索引字段为name和age, name为降序, age为升序
+
+```shell
+$ mongo-helper create --coll=demo --ope=index --indexs=name_-1,age_1
+load mongodb success...
+Index created successfully, index name: name_-1_age_1
+```
+
+该命令读取的连接信息为`~/mongo-plus.json`文件中的配置信息, 如果你想使用其他配置信息, 可以使用`--addr`, `--db`, `--u`, `--p`参数来指定
+
+## 问题反馈
+
+直接提issue, 我会尽快回复
