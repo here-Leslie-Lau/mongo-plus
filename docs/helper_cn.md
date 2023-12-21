@@ -10,7 +10,6 @@ go install github.com/here-Leslie-Lau/mongo-plus/cmd@latest
 mv $GOPATH/bin/cmd $GOPATH/bin/mongo-helper
 ```
 
-
 ## 使用
 
 ```shell
@@ -57,7 +56,7 @@ Usage:
 Flags:
       --coll string      要操作的集合名字
   -h, --help             帮助信息
-      --indexs strings   创建索引的字段格式为 '索引列_排序规则(1或-1)', 例如: 'name_1', 'age_-1', 'name_1_age_-1'
+      --indexs strings   创建索引的字段格式为 '索引列_排序规则(1或-1)', 例如: 'name_1', 'age_-1'
       --ope string       需要执行的操作, 目前仅支持index(索引)
 ```
 
