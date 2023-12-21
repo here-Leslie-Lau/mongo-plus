@@ -16,6 +16,7 @@ A secondary encapsulation based on the official MongoDB Go driver.
 - [Easy aggregation support](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
 - [Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
 - monitor support
+- [Command-line tool](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/helper.md)
 - Continuously being updated
 
 ## Quick Start
@@ -260,7 +261,7 @@ Options 2: Submit an Issue Directly
 | DONE | Add english documentation |
 | DONE | Support for MongoDB database management commands |
 | DONE | Monitor support |
-| TODO | Adding command-line tool support (creating indexes, etc.), use Cobra |
+| DONE | Adding command-line tool support (creating indexes, etc.), use Cobra |
 | TODO | Printing support for MongoDB native statements |
 | TODO | Transaction Support |
 

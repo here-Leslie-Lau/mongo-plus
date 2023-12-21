@@ -16,6 +16,7 @@
 - [简易的聚合(aggregate)支持](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
 - [数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
 - monitor支持
+- [命令行工具](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/helper_cn.md)
 - 持续更新ing
 
 ## 快速开始
@@ -260,7 +261,7 @@ Options 2: 直接提交issue
 | DONE | README.md与聚合操作文档增加英文文档 |
 | DONE | mongodb数据库管理命令支持 |
 | DONE | monitor支持 |
-| TODO | 增加命令行工具支持(创建索引等), 使用Cobra |
+| DONE | 增加命令行工具支持(创建索引等), 使用Cobra |
 | TODO | mongodb原生语句打印支持 |
 | TODO | 事务支持 |
 
