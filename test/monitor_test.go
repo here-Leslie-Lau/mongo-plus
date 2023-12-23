@@ -45,7 +45,7 @@ func TestCommandMonitor(t *testing.T) {
 			if ok {
 				commands = v.(bson.Raw)
 			}
-			fmt.Printf("\n [%.3fms] %s, %v\n", float64(evt.DurationNanos)/1e6, commands.String(), evt.Reply)
+			fmt.Printf("\n [%.3fms] %s, %v\n", float64(evt.Duration)/1e6, commands.String(), evt.Reply)
 		},
 		Failed: func(_ context.Context, evt *event.CommandFailedEvent) {
 			var commands bson.Raw
@@ -53,7 +53,7 @@ func TestCommandMonitor(t *testing.T) {
 			if ok {
 				commands = v.(bson.Raw)
 			}
-			fmt.Printf("\n [%.3fms] %s, %v\n", float64(evt.DurationNanos)/1e6, commands.String(), evt.Failure)
+			fmt.Printf("\n [%.3fms] %s, %v\n", float64(evt.Duration)/1e6, commands.String(), evt.Failure)
 		},
 	}
 	conn, f := newConnWithMonitor(monitor)

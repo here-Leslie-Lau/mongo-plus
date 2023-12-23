@@ -23,6 +23,9 @@ type config struct {
 	PoolMonitor    *event.PoolMonitor
 	CommandMonitor *event.CommandMonitor
 	ServerMonitor  *event.ServerMonitor
+
+	// 日志相关
+	LogOpt *options.LoggerOptions
 }
 
 func (cfg *config) getOption() *options.ClientOptions {
@@ -49,6 +52,12 @@ func (cfg *config) getOption() *options.ClientOptions {
 	if cfg.ServerMonitor != nil {
 		opt.SetServerMonitor(cfg.ServerMonitor)
 	}
+
+	// log
+	if cfg.LogOpt != nil {
+		opt.SetLoggerOptions(cfg.LogOpt)
+	}
+
 	return opt
 }
 
@@ -123,5 +132,12 @@ func WithMonitor(monitor interface{}) Option {
 		return WithServerMonitor(v)
 	default:
 		panic("invalid monitor type")
+	}
+}
+
+// WithLoggerOptions set logger options into config
+func WithLoggerOptions(logOpt *options.LoggerOptions) Option {
+	return func(cfg *config) {
+		cfg.LogOpt = logOpt
 	}
 }
