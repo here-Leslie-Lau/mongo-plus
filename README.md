@@ -262,6 +262,7 @@ Options 2: Submit an Issue Directly
 | DONE | Support for MongoDB database management commands |
 | DONE | Monitor support |
 | DONE | Adding command-line tool support (creating indexes, etc.), use Cobra |
+| DONE | Logger option support |
 | TODO | Printing support for MongoDB native statements |
 | TODO | Transaction Support |
 

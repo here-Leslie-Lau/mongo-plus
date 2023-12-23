@@ -262,6 +262,7 @@ Options 2: 直接提交issue
 | DONE | mongodb数据库管理命令支持 |
 | DONE | monitor支持 |
 | DONE | 增加命令行工具支持(创建索引等), 使用Cobra |
+| DONE | logger option支持 |
 | TODO | mongodb原生语句打印支持 |
 | TODO | 事务支持 |
 
