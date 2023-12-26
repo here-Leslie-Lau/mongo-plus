@@ -4,6 +4,7 @@ package mongo
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -23,6 +24,8 @@ type Chain struct {
 	findOneOpt *options.FindOneOptions
 	// UpdateOptions条件暂存区
 	updateOpt *options.UpdateOptions
+	// nolint native mongo statement
+	statement json.RawMessage
 }
 
 // 对chain的字段进行初始化赋值
