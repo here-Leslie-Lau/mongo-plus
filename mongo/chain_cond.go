@@ -4,6 +4,8 @@ package mongo
 
 import (
 	"context"
+	"io"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -235,5 +237,20 @@ func (ch *Chain) Or(filter map[string]interface{}) *Chain {
 // 具体例子参考test/chain_test.go.TestChainOrs用例
 func (ch *Chain) Ors(filters ...map[string]interface{}) *Chain {
 	ch.condStorage["$or"] = filters
+	return ch
+}
+
+// Debug enable debug mode
+// such as: ch.Debug(os.Stdout).Where("name": "leslie").Find(&des)
+// output: db.collection.find({name: "leslie"})
+
+// This feature facilitates troubleshooting,
+// and it is recommended not to enable it in a production environment.
+func (ch *Chain) Debug(w io.WriteCloser) *Chain {
+	if w == nil {
+		w = os.Stdout
+	}
+	ch.statement.Switch = true
+	ch.statement.w = w
 	return ch
 }

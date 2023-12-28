@@ -1,13 +1,16 @@
 package mongo
 
-import "encoding/json"
+import "io"
 
 type Statement struct {
+	// the switch to record the statement
+	Switch bool
 	// mongo native statement
-	Statement  string
-	Attributes json.RawMessage
+	Statement string
+	// the io.Writer to write the statement
+	w io.WriteCloser
 }
 
 func newStatement(collName string) *Statement {
-	return &Statement{Statement: "db." + collName + "()."}
+	return &Statement{Statement: "db." + collName + "."}
 }
