@@ -4,7 +4,6 @@ package mongo
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -14,8 +13,9 @@ import (
 )
 
 type Chain struct {
-	ctx  context.Context
-	coll *mongo.Collection
+	ctx      context.Context
+	collName string
+	coll     *mongo.Collection
 	// 条件暂存区
 	condStorage map[string]interface{}
 	// FindOptions条件暂存区
@@ -24,8 +24,8 @@ type Chain struct {
 	findOneOpt *options.FindOneOptions
 	// UpdateOptions条件暂存区
 	updateOpt *options.UpdateOptions
-	// nolint native mongo statement
-	statement json.RawMessage
+	// native mongo statement
+	statement *Statement
 }
 
 // 对chain的字段进行初始化赋值
@@ -42,6 +42,8 @@ func (ch *Chain) init() {
 	if ch.ctx == nil {
 		ch.ctx = context.Background()
 	}
+	// init chain statement
+	ch.statement = newStatement(ch.collName)
 }
 
 // FindOne 查询单个文档

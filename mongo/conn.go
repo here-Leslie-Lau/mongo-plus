@@ -44,7 +44,10 @@ func NewConn(opts ...Option) (*Conn, func()) {
 
 // Collection 获取操作集合的对象
 func (c *Conn) Collection(i Collection) *Chain {
-	ch := &Chain{coll: c.db.Collection(i.Collection())}
+	ch := &Chain{
+		collName: i.Collection(),
+		coll:     c.db.Collection(i.Collection()),
+	}
 	ch.init()
 	return ch
 }
