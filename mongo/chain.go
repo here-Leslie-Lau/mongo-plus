@@ -58,6 +58,7 @@ func (ch *Chain) FindOne(des interface{}) error {
 func (ch *Chain) Find(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
+	ch.statement.debugEnd("find", ch.condStorage)
 	cur, err := ch.coll.Find(ch.ctx, f, ch.findOpt)
 	if err != nil {
 		return err

@@ -16,7 +16,7 @@ type Statement struct {
 }
 
 func newStatement(collName string) *Statement {
-	return &Statement{Statement: "mongo-plus: \tdb." + collName + "."}
+	return &Statement{Statement: "mongo-plus:\tdb." + collName + "."}
 }
 
 func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
@@ -25,8 +25,8 @@ func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
 		return
 	}
 
-	byt, _ := json.Marshal(cond)
-	s.Statement += ope + "(" + string(byt) + ")\n"
+	s.debugJoin(ope, cond)
+	s.Statement += "\n"
 	// write to io.Writer
 	if s.w == nil {
 		s.w = os.Stdout
@@ -35,4 +35,14 @@ func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (s *Statement) debugJoin(ope string, cond map[string]interface{}) {
+	if !s.Switch {
+		// if debug mode is not enabled, return directly
+		return
+	}
+
+	byt, _ := json.Marshal(cond)
+	s.Statement += ope + "(" + string(byt) + ")"
 }
