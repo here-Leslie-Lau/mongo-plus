@@ -1,6 +1,10 @@
 package mongo
 
-import "io"
+import (
+	"encoding/json"
+	"io"
+	"os"
+)
 
 type Statement struct {
 	// the switch to record the statement
@@ -12,5 +16,23 @@ type Statement struct {
 }
 
 func newStatement(collName string) *Statement {
-	return &Statement{Statement: "db." + collName + "."}
+	return &Statement{Statement: "mongo-plus: \tdb." + collName + "."}
+}
+
+func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
+	if !s.Switch {
+		// if debug mode is not enabled, return directly
+		return
+	}
+
+	byt, _ := json.Marshal(cond)
+	s.Statement += ope + "(" + string(byt) + ")\n"
+	// write to io.Writer
+	if s.w == nil {
+		s.w = os.Stdout
+	}
+	_, err := s.w.Write([]byte(s.Statement))
+	if err != nil {
+		panic(err)
+	}
 }

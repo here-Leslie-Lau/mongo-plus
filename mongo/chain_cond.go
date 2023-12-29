@@ -244,7 +244,7 @@ func (ch *Chain) Ors(filters ...map[string]interface{}) *Chain {
 // such as: ch.Debug(os.Stdout).Where("name": "leslie").Find(&des)
 // output: db.collection.find({name: "leslie"})
 
-// This feature facilitates troubleshooting,
+// This feature facilitates troubleshooting, may lead to panic
 // and it is recommended not to enable it in a production environment.
 func (ch *Chain) Debug(w io.WriteCloser) *Chain {
 	if w == nil {

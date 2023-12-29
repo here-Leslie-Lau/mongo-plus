@@ -50,6 +50,7 @@ func (ch *Chain) init() {
 func (ch *Chain) FindOne(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
+	ch.statement.debugEnd("findOne", ch.condStorage)
 	return ch.coll.FindOne(ch.ctx, f, ch.findOneOpt).Decode(des)
 }
 
