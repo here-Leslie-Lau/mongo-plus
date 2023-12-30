@@ -19,13 +19,13 @@ func newStatement(collName string) *Statement {
 	return &Statement{Statement: "mongo-plus:\tdb." + collName + "."}
 }
 
-func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
+func (s *Statement) debugEnd(ope string, des interface{}) {
 	if !s.Switch {
 		// if debug mode is not enabled, return directly
 		return
 	}
 
-	s.debugJoin(ope, cond)
+	s.debugJoin(ope, des)
 	s.Statement += "\n"
 	// write to io.Writer
 	if s.w == nil {
@@ -37,12 +37,15 @@ func (s *Statement) debugEnd(ope string, cond map[string]interface{}) {
 	}
 }
 
-func (s *Statement) debugJoin(ope string, cond map[string]interface{}) {
+func (s *Statement) debugJoin(ope string, des interface{}) {
 	if !s.Switch {
 		// if debug mode is not enabled, return directly
 		return
 	}
 
-	byt, _ := json.Marshal(cond)
+	byt, err := json.Marshal(des)
+	if err != nil {
+		panic(err)
+	}
 	s.Statement += ope + "(" + string(byt) + ")"
 }

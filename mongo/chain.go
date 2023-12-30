@@ -73,12 +73,14 @@ func (ch *Chain) Find(des interface{}) error {
 
 // InsertOne 插入一条文档
 func (ch *Chain) InsertOne(doc interface{}) error {
+	ch.statement.debugEnd("insertOne", doc)
 	_, err := ch.coll.InsertOne(ch.ctx, doc)
 	return err
 }
 
 // InsertMany 插入多条文档, 需要interface{}数组
 func (ch *Chain) InsertMany(docs []interface{}) error {
+	ch.statement.debugEnd("insertMany", docs)
 	_, err := ch.coll.InsertMany(ch.ctx, docs)
 	return err
 }
