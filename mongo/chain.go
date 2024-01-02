@@ -87,6 +87,9 @@ func (ch *Chain) InsertMany(docs []interface{}) error {
 
 // UpdateOne 根据chain的条件更新指定的一条文档, updateMap为更新的内容
 func (ch *Chain) UpdateOne(updateMap map[string]interface{}) error {
+	// debug statement
+	ch.statement.batchDebugEnd("updateOne", ch.condStorage, map[string]interface{}{"$set": updateMap})
+
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
@@ -96,6 +99,9 @@ func (ch *Chain) UpdateOne(updateMap map[string]interface{}) error {
 
 // Update 根据chain的条件更新指定的文档, updateMap为更新的内容
 func (ch *Chain) Update(updateMap map[string]interface{}) error {
+	// debug statement
+	ch.statement.batchDebugEnd("updateMany", ch.condStorage, map[string]interface{}{"$set": updateMap})
+
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 

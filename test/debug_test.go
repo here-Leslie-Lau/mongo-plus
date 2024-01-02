@@ -58,3 +58,34 @@ func TestDebugInsertMany(t *testing.T) {
 	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).InsertMany(docs)
 	require.Nil(t, err)
 }
+
+func TestDebugUpdateOne(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	filter := map[string]interface{}{
+		"name":  "leslie",
+		"value": 22,
+	}
+	content := map[string]interface{}{
+		"age": 101,
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Filter(filter).UpdateOne(content)
+	require.Nil(t, err)
+}
+
+func TestDebugUpdateMany(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	filter := map[string]interface{}{
+		"name":  "leslie",
+		"value": 100,
+	}
+	content := map[string]interface{}{
+		"age": 101,
+	}
+
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Filter(filter).Update(content)
+	require.Nil(t, err)
+}

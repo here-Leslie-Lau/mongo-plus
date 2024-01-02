@@ -49,3 +49,33 @@ func (s *Statement) debugJoin(ope string, des interface{}) {
 	}
 	s.Statement += ope + "(" + string(byt) + ")"
 }
+
+func (s *Statement) batchDebugEnd(ope string, list ...interface{}) {
+	if !s.Switch {
+		// if debug mode is not enabled, return directly
+		return
+	}
+
+	s.Statement += ope + "("
+	for index, ele := range list {
+		byt, err := json.Marshal(ele)
+		if err != nil {
+			panic(err)
+		}
+		if index == len(list)-1 {
+			s.Statement += string(byt)
+		} else {
+			s.Statement += string(byt) + ", "
+		}
+	}
+	s.Statement += ")\n"
+
+	// write to io.Writer
+	if s.w == nil {
+		s.w = os.Stdout
+	}
+	_, err := s.w.Write([]byte(s.Statement))
+	if err != nil {
+		panic(err)
+	}
+}
