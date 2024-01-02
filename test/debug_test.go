@@ -28,3 +28,33 @@ func TestDebugFindAll(t *testing.T) {
 	require.Equal(t, true, len(list) > 0)
 	require.Equal(t, "leslie", list[0].Name)
 }
+
+func TestDebugInsertOne(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	doc := &result{
+		Value: 101,
+		Name:  "leslie",
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).InsertOne(doc)
+	require.Nil(t, err)
+}
+
+func TestDebugInsertMany(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	docs := []interface{}{
+		&result{
+			Value: 103,
+			Name:  "leslie",
+		},
+		&result{
+			Value: 104,
+			Name:  "leslie",
+		},
+	}
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).InsertMany(docs)
+	require.Nil(t, err)
+}
