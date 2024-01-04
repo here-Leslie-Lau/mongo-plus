@@ -136,6 +136,9 @@ func (ch *Chain) Delete() error {
 
 // Count 根据chain内的条件查询满足条件的文档记录数
 func (ch *Chain) Count() (int64, error) {
+	// debug statement
+	ch.statement.debugEnd("countDocuments", ch.condStorage)
+
 	f := bson.M(ch.condStorage)
 	return ch.coll.CountDocuments(ch.ctx, f)
 }

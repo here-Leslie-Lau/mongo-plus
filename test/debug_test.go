@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
@@ -104,4 +105,14 @@ func TestDebugMany(t *testing.T) {
 
 	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Where("name", "skyle").Delete()
 	require.Nil(t, err)
+}
+
+func TestDebugCount(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	cnt, err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Where("name", "leslie").Count()
+	require.Nil(t, err)
+
+	fmt.Println("cnt:", cnt)
 }
