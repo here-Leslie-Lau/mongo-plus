@@ -35,7 +35,7 @@ func TestDebugInsertOne(t *testing.T) {
 
 	doc := &result{
 		Value: 101,
-		Name:  "leslie",
+		Name:  "skyle",
 	}
 	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).InsertOne(doc)
 	require.Nil(t, err)
@@ -87,5 +87,21 @@ func TestDebugUpdateMany(t *testing.T) {
 	}
 
 	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Filter(filter).Update(content)
+	require.Nil(t, err)
+}
+
+func TestDebugDeleteOne(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Where("name", "leslie").DeleteOne()
+	require.Nil(t, err)
+}
+
+func TestDebugMany(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).WithCtx(context.TODO()).Where("name", "skyle").Delete()
 	require.Nil(t, err)
 }

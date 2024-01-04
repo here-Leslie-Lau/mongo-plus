@@ -110,16 +110,27 @@ func (ch *Chain) Update(updateMap map[string]interface{}) error {
 }
 
 // DeleteOne 根据chain的条件删除一条文档
-func (ch *Chain) DeleteOne(ctx context.Context) error {
+func (ch *Chain) DeleteOne() error {
+	// debug statement
+	ch.statement.debugEnd("deleteOne", ch.condStorage)
+
 	f := bson.M(ch.condStorage)
-	_, err := ch.coll.DeleteOne(ctx, f)
+	_, err := ch.coll.DeleteOne(ch.ctx, f)
 	return err
 }
 
 // Delete 根据chain的条件删除指定的文档
-func (ch *Chain) Delete(ctx context.Context) error {
+func (ch *Chain) Delete() error {
+	if len(ch.condStorage) == 0 {
+		// avoid delete all documents
+		return errors.New("chain condStorage is zero, Delete fail")
+	}
+
+	// debug statement
+	ch.statement.debugEnd("deleteMany", ch.condStorage)
+
 	f := bson.M(ch.condStorage)
-	_, err := ch.coll.DeleteMany(ctx, f)
+	_, err := ch.coll.DeleteMany(ch.ctx, f)
 	return err
 }
 
