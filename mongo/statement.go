@@ -2,8 +2,11 @@ package mongo
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
+
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Statement struct {
@@ -19,13 +22,23 @@ func newStatement(collName string) *Statement {
 	return &Statement{Statement: "mongo-plus:\tdb." + collName + "."}
 }
 
-func (s *Statement) debugEnd(ope string, des interface{}) {
+func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindOptions) {
 	if !s.Switch {
 		// if debug mode is not enabled, return directly
 		return
 	}
 
 	s.debugJoin(ope, des)
+
+	// specially handle the find operation
+	if ope == "find" && findOpt != nil {
+		// limit
+		if findOpt.Limit != nil && *findOpt.Limit > 0 {
+			s.Statement += ".limit(" + fmt.Sprint((*findOpt.Limit)) + ")"
+		}
+		// TODO skip and sort
+	}
+
 	s.Statement += "\n"
 	// write to io.Writer
 	if s.w == nil {

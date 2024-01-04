@@ -50,7 +50,7 @@ func (ch *Chain) init() {
 func (ch *Chain) FindOne(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	ch.statement.debugEnd("findOne", ch.condStorage)
+	ch.statement.debugEnd("findOne", ch.condStorage, nil)
 	return ch.coll.FindOne(ch.ctx, f, ch.findOneOpt).Decode(des)
 }
 
@@ -58,7 +58,7 @@ func (ch *Chain) FindOne(des interface{}) error {
 func (ch *Chain) Find(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
-	ch.statement.debugEnd("find", ch.condStorage)
+	ch.statement.debugEnd("find", ch.condStorage, ch.findOpt)
 	cur, err := ch.coll.Find(ch.ctx, f, ch.findOpt)
 	if err != nil {
 		return err
@@ -73,14 +73,14 @@ func (ch *Chain) Find(des interface{}) error {
 
 // InsertOne 插入一条文档
 func (ch *Chain) InsertOne(doc interface{}) error {
-	ch.statement.debugEnd("insertOne", doc)
+	ch.statement.debugEnd("insertOne", doc, nil)
 	_, err := ch.coll.InsertOne(ch.ctx, doc)
 	return err
 }
 
 // InsertMany 插入多条文档, 需要interface{}数组
 func (ch *Chain) InsertMany(docs []interface{}) error {
-	ch.statement.debugEnd("insertMany", docs)
+	ch.statement.debugEnd("insertMany", docs, nil)
 	_, err := ch.coll.InsertMany(ch.ctx, docs)
 	return err
 }
@@ -112,7 +112,7 @@ func (ch *Chain) Update(updateMap map[string]interface{}) error {
 // DeleteOne 根据chain的条件删除一条文档
 func (ch *Chain) DeleteOne() error {
 	// debug statement
-	ch.statement.debugEnd("deleteOne", ch.condStorage)
+	ch.statement.debugEnd("deleteOne", ch.condStorage, nil)
 
 	f := bson.M(ch.condStorage)
 	_, err := ch.coll.DeleteOne(ch.ctx, f)
@@ -127,7 +127,7 @@ func (ch *Chain) Delete() error {
 	}
 
 	// debug statement
-	ch.statement.debugEnd("deleteMany", ch.condStorage)
+	ch.statement.debugEnd("deleteMany", ch.condStorage, nil)
 
 	f := bson.M(ch.condStorage)
 	_, err := ch.coll.DeleteMany(ch.ctx, f)
@@ -137,7 +137,7 @@ func (ch *Chain) Delete() error {
 // Count 根据chain内的条件查询满足条件的文档记录数
 func (ch *Chain) Count() (int64, error) {
 	// debug statement
-	ch.statement.debugEnd("countDocuments", ch.condStorage)
+	ch.statement.debugEnd("countDocuments", ch.condStorage, nil)
 
 	f := bson.M(ch.condStorage)
 	return ch.coll.CountDocuments(ch.ctx, f)

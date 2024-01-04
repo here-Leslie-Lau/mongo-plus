@@ -116,3 +116,13 @@ func TestDebugCount(t *testing.T) {
 
 	fmt.Println("cnt:", cnt)
 }
+
+func TestDebugLimit(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Where("name", "leslie").Limit(2).Find(&list)
+	require.Nil(t, err)
+	require.Equal(t, 2, len(list))
+}
