@@ -135,3 +135,35 @@ func TestDebugSkip(t *testing.T) {
 	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Skip(9).Find(&list)
 	require.Nil(t, err)
 }
+
+func TestDebugOr(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Or(map[string]interface{}{"name": "leslie", "value": 100}).Find(&list)
+	require.Nil(t, err)
+
+	for _, res := range list {
+		fmt.Println(res)
+	}
+}
+
+func TestDebugOrs(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	orMap1 := map[string]interface{}{
+		"value": 100,
+	}
+	orMap2 := map[string]interface{}{
+		"value": 101,
+	}
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Ors(orMap1, orMap2).Find(&list)
+	require.Nil(t, err)
+
+	for _, res := range list {
+		fmt.Println(res)
+	}
+}
