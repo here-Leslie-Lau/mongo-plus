@@ -126,3 +126,12 @@ func TestDebugLimit(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, 2, len(list))
 }
+
+func TestDebugSkip(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Skip(9).Find(&list)
+	require.Nil(t, err)
+}

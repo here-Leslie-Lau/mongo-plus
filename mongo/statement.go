@@ -32,11 +32,15 @@ func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindO
 
 	// specially handle the find operation
 	if ope == "find" && findOpt != nil {
+		// skip
+		if findOpt.Skip != nil {
+			s.Statement += ".skip(" + fmt.Sprint((*findOpt.Skip)) + ")"
+		}
 		// limit
 		if findOpt.Limit != nil && *findOpt.Limit > 0 {
 			s.Statement += ".limit(" + fmt.Sprint((*findOpt.Limit)) + ")"
 		}
-		// TODO skip and sort
+		// TODO: sort
 	}
 
 	s.Statement += "\n"
