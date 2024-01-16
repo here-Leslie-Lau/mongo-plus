@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -40,7 +41,18 @@ func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindO
 		if findOpt.Limit != nil && *findOpt.Limit > 0 {
 			s.Statement += ".limit(" + fmt.Sprint((*findOpt.Limit)) + ")"
 		}
-		// TODO: sort
+		// sort
+		if findOpt.Sort != nil {
+			sort := findOpt.Sort.(primitive.D)
+			s.Statement += ".sort({"
+			for i, v := range sort {
+				s.Statement += (v.Key + ":" + fmt.Sprint(v.Value))
+				if i != len(sort)-1 {
+					s.Statement += ", "
+				}
+			}
+			s.Statement += "})"
+		}
 	}
 
 	s.Statement += "\n"

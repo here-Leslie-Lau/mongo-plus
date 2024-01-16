@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/here-Leslie-Lau/mongo-plus/mongo"
 	"github.com/stretchr/testify/require"
 )
 
@@ -165,5 +166,21 @@ func TestDebugOrs(t *testing.T) {
 
 	for _, res := range list {
 		fmt.Println(res)
+	}
+}
+
+func TestDebugSort(t *testing.T) {
+	conn, f := newConn()
+	defer f()
+
+	var list []*result
+	err := conn.Collection(&demo{collName: "demo"}).Debug(os.Stdout).Sort(mongo.SortRule{
+		Typ:   mongo.SortTypeASC,
+		Field: "value",
+	}).Find(&list)
+	require.Nil(t, err)
+
+	for _, res := range list {
+		fmt.Println(res.Value)
 	}
 }
