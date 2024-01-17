@@ -2,9 +2,10 @@ package mongo
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
+	"strconv"
+	"unsafe"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,14 +14,30 @@ import (
 type Statement struct {
 	// the switch to record the statement
 	Switch bool
-	// mongo native statement
-	Statement string
+	// the buffer to store the statement
+	buf []byte
 	// the io.Writer to write the statement
 	w io.WriteCloser
 }
 
 func newStatement(collName string) *Statement {
-	return &Statement{Statement: "mongo-plus:\tdb." + collName + "."}
+	// set the default buffer size to 32
+	buf := make([]byte, 0, 32)
+	s := &Statement{buf: buf}
+
+	s.batchAppendBuf("mongo-plus:\tdb.", collName, ".")
+	return s
+}
+
+func (s *Statement) appendBuf(str string) {
+	buf := *(*[]byte)(unsafe.Pointer(&str))
+	s.buf = append(s.buf, buf...)
+}
+
+func (s *Statement) batchAppendBuf(strs ...string) {
+	for _, str := range strs {
+		s.appendBuf(str)
+	}
 }
 
 func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindOptions) {
@@ -35,32 +52,32 @@ func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindO
 	if ope == "find" && findOpt != nil {
 		// skip
 		if findOpt.Skip != nil {
-			s.Statement += ".skip(" + fmt.Sprint((*findOpt.Skip)) + ")"
+			s.batchAppendBuf(".skip(", strconv.FormatInt(*findOpt.Skip, 10), ")")
 		}
 		// limit
 		if findOpt.Limit != nil && *findOpt.Limit > 0 {
-			s.Statement += ".limit(" + fmt.Sprint((*findOpt.Limit)) + ")"
+			s.batchAppendBuf(".limit(", strconv.FormatInt(*findOpt.Limit, 10), ")")
 		}
 		// sort
 		if findOpt.Sort != nil {
 			sort := findOpt.Sort.(primitive.D)
-			s.Statement += ".sort({"
+			s.appendBuf(".sort({")
 			for i, v := range sort {
-				s.Statement += (v.Key + ":" + fmt.Sprint(v.Value))
+				s.batchAppendBuf(v.Key, ":", *(*string)(unsafe.Pointer(&v.Value)))
 				if i != len(sort)-1 {
-					s.Statement += ", "
+					s.appendBuf(", ")
 				}
 			}
-			s.Statement += "})"
+			s.appendBuf("})")
 		}
 	}
 
-	s.Statement += "\n"
+	s.appendBuf("\n")
 	// write to io.Writer
 	if s.w == nil {
 		s.w = os.Stdout
 	}
-	_, err := s.w.Write([]byte(s.Statement))
+	_, err := s.w.Write(s.buf)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +93,9 @@ func (s *Statement) debugJoin(ope string, des interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	s.Statement += ope + "(" + string(byt) + ")"
+
+	// append to buf
+	s.batchAppendBuf(ope, "(", *(*string)(unsafe.Pointer(&byt)), ")")
 }
 
 func (s *Statement) batchDebugEnd(ope string, list ...interface{}) {
@@ -85,25 +104,25 @@ func (s *Statement) batchDebugEnd(ope string, list ...interface{}) {
 		return
 	}
 
-	s.Statement += ope + "("
+	s.batchAppendBuf(ope, "(")
 	for index, ele := range list {
 		byt, err := json.Marshal(ele)
 		if err != nil {
 			panic(err)
 		}
 		if index == len(list)-1 {
-			s.Statement += string(byt)
+			s.appendBuf(*(*string)(unsafe.Pointer(&byt)))
 		} else {
-			s.Statement += string(byt) + ", "
+			s.batchAppendBuf(*(*string)(unsafe.Pointer(&byt)), ", ")
 		}
 	}
-	s.Statement += ")\n"
+	s.appendBuf(")\n")
 
 	// write to io.Writer
 	if s.w == nil {
 		s.w = os.Stdout
 	}
-	_, err := s.w.Write([]byte(s.Statement))
+	_, err := s.w.Write(s.buf)
 	if err != nil {
 		panic(err)
 	}
