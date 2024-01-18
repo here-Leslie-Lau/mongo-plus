@@ -15,6 +15,7 @@ A secondary encapsulation based on the official MongoDB Go driver.
 - Pagination query support
 - [Easy aggregation support](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
 - [Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
+- Debug mode, supports generating native MongoDB statements.
 - monitor support
 - [Command-line tool](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/helper.md)
 - Continuously being updated
@@ -177,6 +178,13 @@ orMap2 := map[string]interface{}{"name": "skyle", "age": 78}
 conn.Ors(orMap1, orMap2).Find(&documents)
 ```
 
+**Debug mode**
+
+```go
+// output: db.xxx.findOne({"name": "leslie"})
+conn.Debug(os.Stdout).Where("name", "leslie").FindOne(res)
+```
+
 [Aggregate Operation](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate.md)
 
 [Database Management Command Operations](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database.md)
@@ -219,34 +227,6 @@ I've summarized personally, and there are several points as follows:
 - The official driver doesn't provide a very convenient way for pagination, _(for example: getting the total page count/total number of items based on the page number/page size passed from the frontend or client),_ so each time it needs to be encapsulated again.
 - I believe a library should try to shield the details as much as possible, and users shouldn't have to focus on the underlying implementation, making it ready to use. _(For example, developers shouldn't need to understand BSON, various operators like $gt, sharding, etc.)_
 
-## Project Structure
-
-```shell
-.
-├── docs							// project documentation
-├── go.mod
-├── go.sum
-├── LICENSE
-├── makefile						// some initialization tools
-├── mongo							// core logic package
-│   ├── aggregate.go				// mongodb aggregation operation logic
-│   ├── aggregate_group.go			// group logic in aggregation operation
-│   ├── chain_cond.go				// call chain condition concatenation logic
-│   ├── chain.go					// core struct definition for chain and encapsulation of mongoDB operation methods
-│   ├── collection.go				// collection interface definition
-│   ├── config.go					// mongoDB connection configuration definition
-│   ├── conn.go						// connection retrieval logic and initialization methods
-│   ├── database.go                 // database management methods
-│   ├── paginate.go					// pagination logic encapsulation
-│   └── type.go						// mongoDB type definitions
-├── README.md
-└── test
-    ├── aggregate_test.go
-    ├── bench_test.go
-    ├── chain_test.go
-    └── conn_test.go
-```
-
 ## How to Contribute
 
 Options 1: Fork the repository, make your changes, and then initiate a "pull request" to submit your changes.
@@ -263,7 +243,7 @@ Options 2: Submit an Issue Directly
 | DONE | Monitor support |
 | DONE | Adding command-line tool support (creating indexes, etc.), use Cobra |
 | DONE | Logger option support |
-| TODO | Printing support for MongoDB native statements |
+| DONE | Printing support for MongoDB native statements |
 | TODO | Transaction Support |
 
 more and more...

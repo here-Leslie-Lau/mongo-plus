@@ -13,8 +13,9 @@ import (
 )
 
 type Chain struct {
-	ctx  context.Context
-	coll *mongo.Collection
+	ctx      context.Context
+	collName string
+	coll     *mongo.Collection
 	// 条件暂存区
 	condStorage map[string]interface{}
 	// FindOptions条件暂存区
@@ -23,6 +24,8 @@ type Chain struct {
 	findOneOpt *options.FindOneOptions
 	// UpdateOptions条件暂存区
 	updateOpt *options.UpdateOptions
+	// native mongo statement
+	statement *Statement
 }
 
 // 对chain的字段进行初始化赋值
@@ -39,12 +42,15 @@ func (ch *Chain) init() {
 	if ch.ctx == nil {
 		ch.ctx = context.Background()
 	}
+	// init chain statement
+	ch.statement = newStatement(ch.collName)
 }
 
 // FindOne 查询单个文档
 func (ch *Chain) FindOne(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
+	ch.statement.debugEnd("findOne", ch.condStorage, nil)
 	return ch.coll.FindOne(ch.ctx, f, ch.findOneOpt).Decode(des)
 }
 
@@ -52,6 +58,7 @@ func (ch *Chain) FindOne(des interface{}) error {
 func (ch *Chain) Find(des interface{}) error {
 	// map => bson.M{}
 	f := bson.M(ch.condStorage)
+	ch.statement.debugEnd("find", ch.condStorage, ch.findOpt)
 	cur, err := ch.coll.Find(ch.ctx, f, ch.findOpt)
 	if err != nil {
 		return err
@@ -66,18 +73,23 @@ func (ch *Chain) Find(des interface{}) error {
 
 // InsertOne 插入一条文档
 func (ch *Chain) InsertOne(doc interface{}) error {
+	ch.statement.debugEnd("insertOne", doc, nil)
 	_, err := ch.coll.InsertOne(ch.ctx, doc)
 	return err
 }
 
 // InsertMany 插入多条文档, 需要interface{}数组
 func (ch *Chain) InsertMany(docs []interface{}) error {
+	ch.statement.debugEnd("insertMany", docs, nil)
 	_, err := ch.coll.InsertMany(ch.ctx, docs)
 	return err
 }
 
 // UpdateOne 根据chain的条件更新指定的一条文档, updateMap为更新的内容
 func (ch *Chain) UpdateOne(updateMap map[string]interface{}) error {
+	// debug statement
+	ch.statement.batchDebugEnd("updateOne", ch.condStorage, map[string]interface{}{"$set": updateMap})
+
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
@@ -87,6 +99,9 @@ func (ch *Chain) UpdateOne(updateMap map[string]interface{}) error {
 
 // Update 根据chain的条件更新指定的文档, updateMap为更新的内容
 func (ch *Chain) Update(updateMap map[string]interface{}) error {
+	// debug statement
+	ch.statement.batchDebugEnd("updateMany", ch.condStorage, map[string]interface{}{"$set": updateMap})
+
 	f := bson.M(ch.condStorage)
 	updateContent := bson.D{bson.E{Key: "$set", Value: updateMap}}
 
@@ -95,21 +110,35 @@ func (ch *Chain) Update(updateMap map[string]interface{}) error {
 }
 
 // DeleteOne 根据chain的条件删除一条文档
-func (ch *Chain) DeleteOne(ctx context.Context) error {
+func (ch *Chain) DeleteOne() error {
+	// debug statement
+	ch.statement.debugEnd("deleteOne", ch.condStorage, nil)
+
 	f := bson.M(ch.condStorage)
-	_, err := ch.coll.DeleteOne(ctx, f)
+	_, err := ch.coll.DeleteOne(ch.ctx, f)
 	return err
 }
 
 // Delete 根据chain的条件删除指定的文档
-func (ch *Chain) Delete(ctx context.Context) error {
+func (ch *Chain) Delete() error {
+	if len(ch.condStorage) == 0 {
+		// avoid delete all documents
+		return errors.New("chain condStorage is zero, Delete fail")
+	}
+
+	// debug statement
+	ch.statement.debugEnd("deleteMany", ch.condStorage, nil)
+
 	f := bson.M(ch.condStorage)
-	_, err := ch.coll.DeleteMany(ctx, f)
+	_, err := ch.coll.DeleteMany(ch.ctx, f)
 	return err
 }
 
 // Count 根据chain内的条件查询满足条件的文档记录数
 func (ch *Chain) Count() (int64, error) {
+	// debug statement
+	ch.statement.debugEnd("countDocuments", ch.condStorage, nil)
+
 	f := bson.M(ch.condStorage)
 	return ch.coll.CountDocuments(ch.ctx, f)
 }
