@@ -15,6 +15,7 @@
 - 分页查询支持
 - [简易的聚合(aggregate)支持](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
 - [数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
+- debug模式, 支持生成原生mongodb语句
 - monitor支持
 - [命令行工具](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/helper_cn.md)
 - 持续更新ing
@@ -177,6 +178,13 @@ orMap2 := map[string]interface{}{"name": "skyle", "age": 78}
 conn.Ors(orMap1, orMap2).Find(&documents)
 ```
 
+**debug模式**
+
+```go
+// output: db.xxx.findOne({"name": "leslie"})
+conn.Debug(os.Stdout).Where("name", "leslie").FindOne(res)
+```
+
 [Aggregate操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/aggregate_cn.md)
 
 [数据库管理命令操作](https://github.com/here-Leslie-Lau/mongo-plus/blob/master/docs/database_cn.md)
@@ -219,34 +227,6 @@ ok  	github.com/here-Leslie-Lau/mongo-plus/test	9.246s
 - 官方驱动没有提供比较好的分页方式，_(例如:根据前端或客户端传入的页数/页码大小，获得相应的总页数/总条数)_ 每次都需要再次封装。
 - 我认为一个库需要尽量屏蔽细节，使用者不应该多关注底层实现，开箱即用。_(比如开发者无需了解bson, $gt各种运算符, 分片等)_
 
-## 项目结构
-
-```shell
-.
-├── docs							// 项目文档
-├── go.mod
-├── go.sum
-├── LICENSE
-├── makefile						// 一些初始化工具
-├── mongo							// 核心逻辑包
-│   ├── aggregate.go				// mongodb聚合操作逻辑(aggregate)
-│   ├── aggregate_group.go			// 聚合操作中group逻辑
-│   ├── chain_cond.go				// 调用链条件拼接逻辑
-│   ├── chain.go					// 核心结构体-chain定义, 与操作mongodb方法封装
-│   ├── collection.go				// collection接口定义
-│   ├── config.go					// 连接mongodb配置定义
-│   ├── conn.go						// 获取连接逻辑及一些初始化方法
-│   ├── database.go                 // 数据库管理相关方法
-│   ├── paginate.go					// 分页逻辑封装
-│   └── type.go						// mongodb类型定义
-├── README.md						// 项目介绍文档
-└── test
-    ├── aggregate_test.go			// 聚合操作单元测试与用法示例
-    ├── bench_test.go				// golang基准测试
-    ├── chain_test.go				// 单元测试与用法示例
-    └── conn_test.go				// 测试用例的初始化封装
-```
-
 ## 如何贡献
 
 Options 1: Fork仓库，提交后发起`pull request`
@@ -263,7 +243,7 @@ Options 2: 直接提交issue
 | DONE | monitor支持 |
 | DONE | 增加命令行工具支持(创建索引等), 使用Cobra |
 | DONE | logger option支持 |
-| TODO | mongodb原生语句打印支持 |
+| DONE | mongodb原生语句打印支持 |
 | TODO | 事务支持 |
 
 more and more...

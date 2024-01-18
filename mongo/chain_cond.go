@@ -246,6 +246,10 @@ func (ch *Chain) Ors(filters ...map[string]interface{}) *Chain {
 
 // This feature facilitates troubleshooting, may lead to panic
 // and it is recommended not to enable it in a production environment.
+
+// Currently supported operations include
+// Find, FindOne, InsertOne, InsertMany, UpdateOne, UpdateMany, DeleteOne, and DeleteMany.
+// For more examples, refer to test/debug_test.go.
 func (ch *Chain) Debug(w io.WriteCloser) *Chain {
 	if w == nil {
 		w = os.Stdout
