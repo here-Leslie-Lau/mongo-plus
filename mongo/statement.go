@@ -63,7 +63,8 @@ func (s *Statement) debugEnd(ope string, des interface{}, findOpt *options.FindO
 			sort := findOpt.Sort.(primitive.D)
 			s.appendBuf(".sort({")
 			for i, v := range sort {
-				s.batchAppendBuf(v.Key, ":", *(*string)(unsafe.Pointer(&v.Value)))
+				typ := v.Value.(SortType)
+				s.batchAppendBuf(v.Key, ":", strconv.Itoa(int(typ)))
 				if i != len(sort)-1 {
 					s.appendBuf(", ")
 				}
